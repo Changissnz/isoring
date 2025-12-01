@@ -1,6 +1,8 @@
 from morebs2.matrix_methods import is_vector,is_valid_range,vector_to_string,string_to_vector,equal_iterables
 from morebs2.numerical_generator import prg__LCG,modulo_in_range
 import numpy as np 
+import random 
+import pickle 
 from collections import defaultdict 
 
 def default_std_Python_prng(integer_seed=None,output_range=[-10**6,10**6],rounding_depth=0): 
@@ -65,7 +67,7 @@ class Sec:
 
     def to_pickle_list(self):
         return (self.seq,self.opm,\
-            self.dm,self.cdm,self.idn_tag)
+            self.ds,self.cds,self.idn_tag)
 
     @staticmethod
     def unpickle_thyself(f): 
@@ -103,7 +105,7 @@ class Sec:
 
         def one_vec(): 
             v = [modulo_in_range(prng(),singleton_range) for _ in range(dimension)]
-            return np.array(v) 
+            return np.round(np.array(v),5) 
 
         # the secret 
         seq = one_vec() 
