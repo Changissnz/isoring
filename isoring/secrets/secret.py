@@ -82,8 +82,8 @@ class Sec:
         rx = pickle.load(rx_)
 
     def __str__(self):
-        s = "** sequence {}\n".format(self.idn_tag)
-        s += vector_to_string(self.seq,float)
+        s = "** secret {}\n".format(self.idn_tag)
+        s += "\t\t" + vector_to_string(self.seq,float)
         s += "\n" + "** optima pr." + "\n"
         s += str(self.opm)
         s += "\n" + "** dep. map" + "\n"
