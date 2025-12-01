@@ -1,0 +1,166 @@
+from morebs2 import matrix_methods,numerical_generator 
+
+def default_std_Python_prng(integer_seed=None,output_range=[-10**6,10**6],rounding_depth=0): 
+    if type(integer_seed) == int:
+        random.seed(integer_seed)
+
+    assert output_range[0] <= output_range[1]
+    assert rounding_depth >= 0 and type(rounding_depth) == int 
+
+    def fx():
+        v = random.uniform(output_range[0],output_range[1]) 
+        v = round(v,rounding_depth) 
+
+        if rounding_depth == 0: 
+            return int(v) 
+        return v  
+    return fx
+
+"""
+every output vector sums to 1.0 
+"""
+def default_std_numpy_prvec(vec_length,integer_seed=None):
+    assert len(vec_length) >= 1 and type(vec_length) == int 
+    if type(integer_seed) == int:
+        np.random.seed(integer_seed)
+
+    X = np.random.rand(vec_length)
+    S = np.sum(X) 
+    assert S > 0.0 
+
+    while S != 1.0: 
+        X = X / S
+        S = np.sum(X) 
+    return X 
+
+class Sec:
+
+    def __init__(self,sequence,optima_pr_map,dep_set=set(),codep_set=set(),idn_tag=0):
+
+        assert matrix_methods.is_vector(sequence)
+        assert type(optima_pr_map) == type(dep_map) and \
+            type(dep_map) == type(codep_map)
+        assert type(optima_pr_map) == defaultdict
+        assert matrix_methods.vector_to_string(sequence,float) in optima_pr_map
+        assert abs(1.0 - sum(optima_pr_map.values())) < 10 ** -5 
+        assert int(idn_tag) == int 
+
+        self.seq = sequence
+        self.opm = optima_pr_map
+        self.ds = dep_set
+        self.cds = codep_set
+        self.idn_tag = idn_tag 
+
+    def dim(self): 
+        return len(self.seq) 
+
+    def pickle_thyself(self,fp):
+        fobj = open(fp,"wb")
+        q = self.to_pickle_list()
+        pickle.dump(q,fobj)
+        fobj.close()
+        return
+
+    def to_pickle_list(self):
+        return (self.seq,self.opm,\
+            self.dm,self.cdm,self.idn_tag)
+
+    @staticmethod
+    def unpickle_thyself(f): 
+        fobj = open(f,"rb")
+        q = pickle.load(fobj)
+        fobj.close()
+        return Sec(q[0],q[1],q[2],q[3],q[4])
+
+    @staticmethod
+    def unpickle_thyselves(fx):
+        rx_ = open(fx,"rb")
+        rx = pickle.load(rx_)
+
+    def __str__(self):
+        s = "** sequence {}\n".format(self.idn_tag)
+        s += matrix_methods.vector_to_string(self.seq,float)
+        s += "\n" + "** optima pr." + "\n"
+        s += str(self.opm)
+        s += "\n" + "** dep. map" + "\n"
+        s += str(self.dm)
+        s += "\n" + "** co-dep. map" + "\n"
+        s += str(self.cdm)
+        return s + "\n"
+
+    """
+    bare instances do not have any dep. or co-dep. 
+    """
+    @staticmethod
+    def generate_bare_instance(singleton_range,dimension,num_optima,prng,idn_tag=0,set_actual_as_max_pr:bool=False):
+
+        if not matrix_methods.is_valid_range(singleton_range,False,True): 
+            assert matrix_methods.is_valid_range(singleton_range,True,True)
+
+        assert type(num_optima) == int and num_optima >= 1 
+
+        def one_vec(): 
+            v = [modulo_in_range(prng(),singleton_range) for _ in range(dimension)]
+            return np.array(v) 
+
+        # the secret 
+        seq = one_vec() 
+
+        # the alternatives 
+        other_seqs = [one_vec() for _ in range(num_optima -1)] 
+        other_seqs.insert(0,seq)
+
+        # numpy generation of corresponding Pr vector 
+        prvec = default_std_numpy_prvec(vec_length=num_optima,integer=int(prng())) 
+
+        # sort Pr vec in descending order if `set_actual_as_max_pr` 
+        if set_actual_as_max_pr:
+            prvec = np.sort(prvec)[::-1] 
+
+        # make optima pr map 
+        opm = defaultdict(float) 
+        for s,p in zip(other_seqs,prvec): 
+            s_ = matrix_methods.vector_to_string(s,float)
+            opm[s_] = p 
+
+        return Sec(seq,opm,dep_set=set(),codep_set=set(),idn_tag=idn_tag)
+
+    def seq_index(self):
+        ops = self.optima_points()
+
+        for (i,o) in enumerate(ops): 
+            stat = matrix_methods.equal_iterables(o,self.seq)
+            if stat: return i 
+        return -1
+
+    def seq_pr(self):
+        qx = self.optima_points_to_index_pr_map()
+        si = self.seq_index()
+        return qx[si] 
+
+    """
+    return: 
+    - np.array,rows ordered by alphanumeric order. 
+    """
+    def optima_points(self):
+        ks = sorted(list(self.opm.keys()))
+        optima_points = [matrix_methods.string_to_vector(v,float) for v in \
+                    ks]
+        optima_points = np.array(optima_points)
+        return optima_points
+
+    """
+    converts opm map 
+        key := stringized point
+        value := Pr. value
+    to a map w/ 
+        key := index of ordering for stringized point
+        value := Pr. value 
+    """
+    def optima_points_to_index_pr_map(self):
+
+        ks = sorted(list(self.opm.keys()))
+        ks = [(i,self.opm[k]) for (i,k) in enumerate(ks)]
+
+        d = defaultdict(float,ks) 
+        return d
