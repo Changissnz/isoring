@@ -1,4 +1,5 @@
 from .secret import * 
+from math import ceil 
 
 DEFAULT_BLOOM_VECTOR_DIM_RANGE = [2,15] 
 DEFAULT_NUM_BLOOMS = 6 
@@ -27,7 +28,7 @@ class BloomOfSecret:
         self.available_dim = sorted(available_dim)
 
     def __next__(self): 
-        if len(self.all_sec) == self.num_blooms: return None 
+        if len(self.all_sec) == self.num_blooms +1: return None 
 
         r0,r1 = min(self.all_sec[-1].seq),max(self.all_sec[-1].seq) 
         d = r1 - r0 
@@ -45,7 +46,7 @@ class BloomOfSecret:
 
         set_actual_as_max_pr = bool(int(self.prng()) % 2) 
 
-        S = Sec.generate_bare_instance(singleton_range,dimension,num_optima,prng,\
+        S = Sec.generate_bare_instance(singleton_range,dimension,num_optima,self.prng,\
             idn_tag=self.base_sec.idn_tag,set_actual_as_max_pr=set_actual_as_max_pr)
         self.all_sec.append(S)
         return S
