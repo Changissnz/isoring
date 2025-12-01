@@ -1,4 +1,7 @@
-from morebs2 import matrix_methods,numerical_generator 
+from morebs2.matrix_methods import is_vector,is_valid_range,vector_to_string,string_to_vector,equal_iterables
+from morebs2.numerical_generator import prg__LCG,modulo_in_range
+import numpy as np 
+from collections import defaultdict 
 
 def default_std_Python_prng(integer_seed=None,output_range=[-10**6,10**6],rounding_depth=0): 
     if type(integer_seed) == int:
@@ -20,7 +23,7 @@ def default_std_Python_prng(integer_seed=None,output_range=[-10**6,10**6],roundi
 every output vector sums to 1.0 
 """
 def default_std_numpy_prvec(vec_length,integer_seed=None):
-    assert len(vec_length) >= 1 and type(vec_length) == int 
+    assert vec_length >= 1 and type(vec_length) == int 
     if type(integer_seed) == int:
         np.random.seed(integer_seed)
 
@@ -28,8 +31,8 @@ def default_std_numpy_prvec(vec_length,integer_seed=None):
     S = np.sum(X) 
     assert S > 0.0 
 
-    while S != 1.0: 
-        X = X / S
+    while abs(S - 1.0) >= 10 ** -5: 
+        X = np.round(X / S,6) 
         S = np.sum(X) 
     return X 
 
@@ -37,13 +40,12 @@ class Sec:
 
     def __init__(self,sequence,optima_pr_map,dep_set=set(),codep_set=set(),idn_tag=0):
 
-        assert matrix_methods.is_vector(sequence)
-        assert type(optima_pr_map) == type(dep_map) and \
-            type(dep_map) == type(codep_map)
-        assert type(optima_pr_map) == defaultdict
-        assert matrix_methods.vector_to_string(sequence,float) in optima_pr_map
+        assert is_vector(sequence)
+        assert type(optima_pr_map) == defaultdict        
+        assert type(dep_set) == set and type(dep_set) == type(codep_set)
+        assert vector_to_string(sequence,float) in optima_pr_map
         assert abs(1.0 - sum(optima_pr_map.values())) < 10 ** -5 
-        assert int(idn_tag) == int 
+        assert type(idn_tag) == int 
 
         self.seq = sequence
         self.opm = optima_pr_map
@@ -79,13 +81,13 @@ class Sec:
 
     def __str__(self):
         s = "** sequence {}\n".format(self.idn_tag)
-        s += matrix_methods.vector_to_string(self.seq,float)
+        s += vector_to_string(self.seq,float)
         s += "\n" + "** optima pr." + "\n"
         s += str(self.opm)
         s += "\n" + "** dep. map" + "\n"
-        s += str(self.dm)
+        s += str(self.ds)
         s += "\n" + "** co-dep. map" + "\n"
-        s += str(self.cdm)
+        s += str(self.cds)
         return s + "\n"
 
     """
@@ -94,8 +96,8 @@ class Sec:
     @staticmethod
     def generate_bare_instance(singleton_range,dimension,num_optima,prng,idn_tag=0,set_actual_as_max_pr:bool=False):
 
-        if not matrix_methods.is_valid_range(singleton_range,False,True): 
-            assert matrix_methods.is_valid_range(singleton_range,True,True)
+        if not is_valid_range(singleton_range,False,True): 
+            assert is_valid_range(singleton_range,True,True)
 
         assert type(num_optima) == int and num_optima >= 1 
 
@@ -111,7 +113,7 @@ class Sec:
         other_seqs.insert(0,seq)
 
         # numpy generation of corresponding Pr vector 
-        prvec = default_std_numpy_prvec(vec_length=num_optima,integer=int(prng())) 
+        prvec = default_std_numpy_prvec(vec_length=num_optima,integer_seed=int(prng())) 
 
         # sort Pr vec in descending order if `set_actual_as_max_pr` 
         if set_actual_as_max_pr:
@@ -120,16 +122,18 @@ class Sec:
         # make optima pr map 
         opm = defaultdict(float) 
         for s,p in zip(other_seqs,prvec): 
-            s_ = matrix_methods.vector_to_string(s,float)
+            s_ = vector_to_string(s,float)
             opm[s_] = p 
 
         return Sec(seq,opm,dep_set=set(),codep_set=set(),idn_tag=idn_tag)
+
+    #----------------- methods to represent <Sec>'s optima points as matrices and indices 
 
     def seq_index(self):
         ops = self.optima_points()
 
         for (i,o) in enumerate(ops): 
-            stat = matrix_methods.equal_iterables(o,self.seq)
+            stat = equal_iterables(o,self.seq)
             if stat: return i 
         return -1
 
@@ -144,7 +148,7 @@ class Sec:
     """
     def optima_points(self):
         ks = sorted(list(self.opm.keys()))
-        optima_points = [matrix_methods.string_to_vector(v,float) for v in \
+        optima_points = [string_to_vector(v,float) for v in \
                     ks]
         optima_points = np.array(optima_points)
         return optima_points
