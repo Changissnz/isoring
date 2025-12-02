@@ -78,7 +78,8 @@ def SearchSpaceIterator_for_bounds(bounds,hop_size):
 return: 
 - bound for optima point, hop size for searching over bound, corresponding Pr. value for optima point. 
 """
-def prng_leak_Secret(sec,prng=None,is_actual_sec_vec:bool=True,is_valid_bounds:bool=True):
+# NOTE: `is_actual_sec_vec` may clash with `optima_point_index`.
+def prng_leak_Secret(sec,prng=None,is_actual_sec_vec:bool=True,is_valid_bounds:bool=True,optima_point_index:int=None):
     assert type(sec) == Sec 
     assert type(is_actual_sec_vec) == bool 
     assert type(is_valid_bounds) == bool 
@@ -87,6 +88,11 @@ def prng_leak_Secret(sec,prng=None,is_actual_sec_vec:bool=True,is_valid_bounds:b
     opt_mat = sec.optima_points()
     if is_actual_sec_vec: 
         seq = deepcopy(sec.seq) 
+    elif type(optima_point_index) != None: 
+        try:
+            seq = opt_mat[optima_point_index] 
+        except:
+            raise ValueError("invalid optima point index")
     else:
         candidates = set([_ for _ in range(opt_mat.shape[0])]) - {sec.seq_index} 
         candidates = sorted(candidates) 
@@ -117,7 +123,6 @@ def prng_leak_Secret(sec,prng=None,is_actual_sec_vec:bool=True,is_valid_bounds:b
         else: 
             bound_length = modulo_in_range(int(prng()),DEFAULT_BOUND_LENGTH_RANGE) 
         bounds = invalid_search_space_bounds_for_vector(seq,bound_length,prng)
-
     return bounds,hop_size,pr_value 
 
 """
@@ -126,4 +131,48 @@ return:
 """
 def leak_IsoRing_into_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=1.0,\
     prioritize_actual_Sec:bool=True): 
-    return -1  
+
+    def prg_(): return int(prng()) 
+
+    num_sec = len(ir.sec_list) 
+    num_dim_covered = ceil(num_sec * ratio_of_dim_covered)  
+
+    # order of secrets 
+    ilist = [_ for _ in range(num_sec)] 
+    ilist = prg_seqsort(ilist,prg_) 
+
+    # number of actual sec vec leaks for secrets 
+    num_actual_sv_leaks = int(ceil(num_dim_covered * actual_sec_vec_ratio))
+
+    # number of valid bounds
+    num_valid_bounds = int(ceil(num_dim_covered * valid_bounds_ratio))
+
+    if prioritize_actual_Sec: 
+        i = ilist.index(ir.actual_sec_index) 
+        j = ilist.pop(i) 
+        ilist.insert(0,j) 
+    ilist = ilist[:num_dim_covered]
+    
+    D = {}
+    for i in ilist:
+        s = ir.sec.sec_list[i] 
+
+        l = len(s.opm) 
+        
+        if num_actual_sv_leaks > 0: 
+            is_actual_sec_vec = True 
+            num_actual_sv_leaks -= 1 
+        else: 
+            is_actual_sec_vec = False 
+
+        if num_valid_bounds > 0: 
+            is_valid_bounds = True 
+            num_valid_bounds -= 1 
+        else: 
+            is_valid_bounds = False 
+
+        bounds,hop_size,pr_value = prng_leak_Secret(s,prng=prng,is_actual_sec_vec=is_actual_sec_vec,\
+            is_valid_bounds=is_valid_bounds,optima_point_index=None)
+
+        D[i] = (bounds,hop_size,pr_value) 
+    return D 

@@ -54,7 +54,7 @@ class Sec:
         assert type(optima_pr_map) == defaultdict        
         assert type(dep_set) == set and type(dep_set) == type(codep_set)
         assert vector_to_string(sequence,float) in optima_pr_map
-        assert abs(1.0 - sum(optima_pr_map.values())) < 10 ** -5 
+        assert abs(1.0 - sum(optima_pr_map.values())) < 10 ** -5, "got {}".format(optima_pr_map)#{}".format(sum(optima_pr_map.values()))
         assert type(idn_tag) == int 
 
         self.seq = sequence
@@ -122,8 +122,20 @@ class Sec:
         other_seqs = [one_vec() for _ in range(num_optima -1)] 
         other_seqs.insert(0,seq)
 
+        stringized_seqs = set()
+        for s in other_seqs:
+            s_ = vector_to_string(s,float) 
+            stringized_seqs |= {s_} 
+
         # numpy generation of corresponding Pr vector 
-        prvec = default_std_numpy_prvec(vec_length=num_optima,integer_seed=int(prng())) 
+        # NOTE: below code is to ensure unique number of optima, even though the number may not be 
+        #       `num_optima`. 
+        prvec = default_std_numpy_prvec(vec_length=len(stringized_seqs),integer_seed=int(prng())) 
+        stringized_seqs = sorted(stringized_seqs) 
+        seq_ = vector_to_string(seq,float) 
+        i = stringized_seqs.index(seq_) 
+        x = stringized_seqs.pop(i) 
+        stringized_seqs.insert(0,x) 
 
         # sort Pr vec in descending order if `set_actual_as_max_pr` 
         if set_actual_as_max_pr:
@@ -131,9 +143,8 @@ class Sec:
 
         # make optima pr map 
         opm = defaultdict(float) 
-        for s,p in zip(other_seqs,prvec): 
-            s_ = vector_to_string(s,float)
-            opm[s_] = p 
+        for s,p in zip(stringized_seqs,prvec): 
+            opm[s] = p 
 
         return Sec(seq,opm,dep_set=set(),codep_set=set(),idn_tag=idn_tag)
 
