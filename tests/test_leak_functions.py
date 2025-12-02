@@ -1,5 +1,4 @@
 from isoring.brute_forcer.leak_functions import * 
-from morebs2.search_space_iterator import * 
 import unittest
 
 

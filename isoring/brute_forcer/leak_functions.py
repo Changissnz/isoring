@@ -1,6 +1,14 @@
 from ..secrets.iring import * 
+from morebs2.search_space_iterator import * 
+from morebs2.matrix_methods import point_in_bounds
+from copy import deepcopy 
+
+DEFAULT_HOP_SIZE_RANGE = [2,9]
+DEFAULT_BOUND_LENGTH_RANGE = [1,4] 
 
 def prng__search_space_bounds_for_vector(vec,hop_size,bound_length,prng=None):
+
+    assert bound_length >= 1.0 
 
     # case: prng is None 
     if type(prng) == type(None): 
@@ -32,6 +40,32 @@ def prng__search_space_bounds_for_vector(vec,hop_size,bound_length,prng=None):
         V.append([v0,v1]) 
     return np.array(V)
 
+def invalid_search_space_bounds_for_vector(vec,bound_length,prng=None): 
+
+    assert bound_length >= 1.0 
+    if type(prng) == type(None): 
+        start = vec + bound_length
+        end = start + end 
+        return np.array([start,end]).T 
+
+    # try five times with the `prng` to output an invalid bounds 
+    t = 5 
+    stat = False 
+    bounds = None 
+    while t > 0 and not stat: 
+        start = np.array([prng() for _ in range(len(vec))]) 
+        end = start + bound_length 
+        bounds = np.array([start,end]).T 
+
+        if point_in_bounds(bounds,vec): 
+            t -= 1 
+        else: 
+            stat = True 
+
+    if stat: 
+        return bounds 
+    return invalid_search_space_bounds_for_vector(vec,bound_length,None) 
+
 def SearchSpaceIterator_for_bounds(bounds,hop_size): 
     startPoint = np.copy(bounds[:,0])
     columnOrder = [i for i in range(bounds.shape[0])]  
@@ -39,3 +73,57 @@ def SearchSpaceIterator_for_bounds(bounds,hop_size):
     cycleIs = 0 
     ssi = SearchSpaceIterator(bounds, startPoint, columnOrder, hop_size,cycleOn, cycleIs)
     return ssi 
+
+"""
+return: 
+- bound for optima point, hop size for searching over bound, corresponding Pr. value for optima point. 
+"""
+def prng_leak_Secret(sec,prng=None,is_actual_sec_vec:bool=True,is_valid_bounds:bool=True):
+    assert type(sec) == Sec 
+    assert type(is_actual_sec_vec) == bool 
+    assert type(is_valid_bounds) == bool 
+
+    # fetch the target optima point 
+    opt_mat = sec.optima_points()
+    if is_actual_sec_vec: 
+        seq = deepcopy(sec.seq) 
+    else:
+        candidates = set([_ for _ in range(opt_mat.shape[0])]) - {sec.seq_index} 
+        candidates = sorted(candidates) 
+        if type(prng) != type(None): 
+            index = int(prng()) % len(candidates) 
+        else:
+            index = random.randrange(0,len(candidates))
+        index = candidates[index]
+        seq = opt_mat[index] 
+
+    # fetch the corresponding Pr. value for optima point 
+    seq_str = vector_to_string(seq,float)
+    pr_value = sec.opm[seq_str]
+
+    # mask the optima point with a bound 
+    if is_valid_bounds:
+        if type(prng) == type(None): 
+            hop_size = 3
+            bound_length = 1.0 
+        else: 
+            hop_size = modulo_in_range(int(prng()),DEFAULT_HOP_SIZE_RANGE) 
+            bound_length = modulo_in_range(int(prng()),DEFAULT_BOUND_LENGTH_RANGE) 
+        bounds = prng__search_space_bounds_for_vector(seq,hop_size,bound_length,prng)
+    else:
+        hop_size = 4 
+        if type(prng) == type(None): 
+            bound_length = 1.0 
+        else: 
+            bound_length = modulo_in_range(int(prng()),DEFAULT_BOUND_LENGTH_RANGE) 
+        bounds = invalid_search_space_bounds_for_vector(seq,bound_length,prng)
+
+    return bounds,hop_size,pr_value 
+
+"""
+return:
+- dict, sec index -> (bounds,hop_size,pr_value)
+"""
+def leak_IsoRing_into_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=1.0,\
+    prioritize_actual_Sec:bool=True): 
+    return -1  
