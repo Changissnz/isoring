@@ -7,6 +7,12 @@ class IsoRingedChain:
         self.ir_list = ir_list  
         return
 
+    def actual_vec_map(self): 
+        D = dict()
+        for ir in self.ir_list:
+            D[ir.idn_tag()] = ir.actual_sec_vec() 
+        return D 
+
     @staticmethod
     def prng__add_depANDcodep_to_IsoRingList(ir_list,prng,codep_ratio=0.0):
         assert len(ir_list) > 0 
@@ -26,8 +32,8 @@ class IsoRingedChain:
             for i in range(0,j): 
                 depset |= oodc[i] 
 
+            # add codep and dep for each in the set 
             codeps = oodc[j]
-            # add codep 
             for j_ in codeps: 
                 cds = codeps - {j_} 
                 ir = ir_dict[j_] 

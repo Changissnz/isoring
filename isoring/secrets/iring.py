@@ -5,7 +5,7 @@ from morebs2.matrix_methods import euclidean_point_distance
 def prng_point_distance_funtion(prng): 
 
     def f(x0,x1):
-        return euclidean_point_distance(x0,x1) * prng()   
+        return euclidean_point_distance(x0,x1) + prng()   
     return f 
 
 class IsoRing:
@@ -34,9 +34,13 @@ class IsoRing:
 
         V = [] 
         for o in opt_points: 
-            v = self.feedback_function(i,o) 
-            V.append(v) 
-        return np.array(v) 
+            try: 
+                v = self.feedback_function(i,o) 
+                V.append(v) 
+            # case: different dim. 
+            except:
+                return None 
+        return np.array(V)  
     
     def provide_feedback_pr(self,stringized_opt_point:str): 
         s = self.iso_repr() 
