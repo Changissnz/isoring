@@ -40,7 +40,7 @@ class IsoRingedChain:
         def prg_(): 
             return int(prng())
 
-        total_conn = len(ir_list) - 1 
+        total_conn = len(idns) - 1 
         codep_conn = int(ceil(total_conn * codep_ratio))
 
         L = prg_seqsort(idns,prg_) 
@@ -49,6 +49,10 @@ class IsoRingedChain:
         while codep_conn > 0: 
             x = modulo_in_range(prg_(),[1,codep_conn+1]) 
             S = set() 
+            i = prg_() % len(L)
+            l = L.pop(i)
+            S |= {l}
+
             for _ in range(x): 
                 i = prg_() % len(L)
                 l = L.pop(i)
