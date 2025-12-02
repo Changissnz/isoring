@@ -31,3 +31,11 @@ def prng__search_space_bounds_for_vector(vec,hop_size,bound_length,prng=None):
         v1 = hop_from_x(vec[i],right_hops,False) 
         V.append([v0,v1]) 
     return np.array(V)
+
+def SearchSpaceIterator_for_bounds(bounds,hop_size): 
+    startPoint = np.copy(bounds[:,0])
+    columnOrder = [i for i in range(bounds.shape[0])]  
+    cycleOn = False   
+    cycleIs = 0 
+    ssi = SearchSpaceIterator(bounds, startPoint, columnOrder, hop_size,cycleOn, cycleIs)
+    return ssi 

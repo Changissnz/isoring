@@ -2,13 +2,6 @@ from isoring.brute_forcer.leak_functions import *
 from morebs2.search_space_iterator import * 
 import unittest
 
-def SearchSpaceIterator_for_bounds(bounds,hop_size): 
-    startPoint = np.copy(bounds[:,0])
-    columnOrder = [i for i in range(bounds.shape[0])]  
-    cycleOn = False   
-    cycleIs = 0 
-    ssi = SearchSpaceIterator(bounds, startPoint, columnOrder, hop_size,cycleOn, cycleIs)
-    return ssi 
 
 
 ### lone file test 
