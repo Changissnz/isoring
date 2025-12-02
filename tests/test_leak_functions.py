@@ -6,6 +6,12 @@ def SecANDprng_sample_X():
     sec = Sec.generate_bare_instance([-60.,1112.],5,6,prng,idn_tag=0,set_actual_as_max_pr=False)
     return sec,prng 
 
+def IsoRingANDprng_sample_X(): 
+    prng = prg__LCG(770,31,72,3212) 
+    sec = Sec.generate_bare_instance([-60.,1112.],5,6,prng,idn_tag=0,set_actual_as_max_pr=False)
+    ir = IsoRing.generate_IsoRing_from_one_secret(sec,prng,feedback_function_type=0)
+    return ir,prng 
+
 
 ### lone file test 
 """
@@ -107,6 +113,52 @@ class LeakFunctions(unittest.TestCase):
 
         assert not stat0 and stat1 
         return
+
+    def test__prng_leak_IsoRing_into_dict__case1(self): 
+        ir,prng = IsoRingANDprng_sample_X()
+        D = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=1.0,\
+            prioritize_actual_Sec=True)
+
+        assert len(D) == len(ir.sec_list)
+
+        i = 0
+        for k,v in D.items(): 
+            sec = ir.sec_list[k]
+            i += int(bounds_cover_actual_sec_vec(sec,v[0])) 
+        assert i == len(ir.sec_list) 
+
+        D2 = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=10**-6,valid_bounds_ratio=1.0,\
+            prioritize_actual_Sec=True)
+
+        assert list(D2.keys())[0] == ir.actual_sec_index
+
+        D3 = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=10**-6,valid_bounds_ratio=1.0,\
+            prioritize_actual_Sec=False)
+
+        assert list(D3.keys())[0] != ir.actual_sec_index
+
+    def test__prng_leak_IsoRing_into_dict__case2(self): 
+        ir,prng = IsoRingANDprng_sample_X()
+        
+        D4 = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio=0.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=1.0,\
+            prioritize_actual_Sec=False)
+
+        i,j = 0,0
+        for k,v in D4.items(): 
+            sec = ir.sec_list[k]
+            i += int(bounds_cover_actual_sec_vec(sec,v[0]))
+            j += int(bounds_cover_one_optima_point_of_sec(sec,v[0])) 
+        assert i == 0 and j == 7 
+
+        D5 = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio=0.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=0.0,\
+            prioritize_actual_Sec=False)
+
+        i,j = 0,0
+        for k,v in D5.items(): 
+            sec = ir.sec_list[k]
+            i += int(bounds_cover_actual_sec_vec(sec,v[0]))
+            j += int(bounds_cover_one_optima_point_of_sec(sec,v[0])) 
+        assert i == j == 0 
 
 if __name__ == '__main__':
     unittest.main()

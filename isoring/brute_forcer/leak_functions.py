@@ -6,6 +6,19 @@ from copy import deepcopy
 DEFAULT_HOP_SIZE_RANGE = [2,9]
 DEFAULT_BOUND_LENGTH_RANGE = [1,4] 
 
+#------------------------ methods to check bounds 
+def bounds_cover_actual_sec_vec(sec,bounds): 
+    return point_in_bounds(bounds,sec.seq) 
+
+def bounds_cover_one_optima_point_of_sec(sec,bounds): 
+    opt_mat = sec.optima_points() 
+    
+    for o in opt_mat: 
+        if point_in_bounds(bounds,o): return True 
+    return False 
+
+#--------------------------------------------------
+
 def prng__search_space_bounds_for_vector(vec,hop_size,bound_length,prng=None):
 
     assert bound_length >= 1.0 
@@ -88,7 +101,7 @@ def prng_leak_Secret(sec,prng=None,is_actual_sec_vec:bool=True,is_valid_bounds:b
     opt_mat = sec.optima_points()
     if is_actual_sec_vec: 
         seq = deepcopy(sec.seq) 
-    elif type(optima_point_index) != None: 
+    elif type(optima_point_index) != type(None): 
         try:
             seq = opt_mat[optima_point_index] 
         except:
@@ -129,7 +142,7 @@ def prng_leak_Secret(sec,prng=None,is_actual_sec_vec:bool=True,is_valid_bounds:b
 return:
 - dict, sec index -> (bounds,hop_size,pr_value)
 """
-def leak_IsoRing_into_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=1.0,\
+def prng_leak_IsoRing_into_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=1.0,\
     prioritize_actual_Sec:bool=True): 
 
     def prg_(): return int(prng()) 
@@ -155,9 +168,7 @@ def leak_IsoRing_into_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,ratio_of_dim
     
     D = {}
     for i in ilist:
-        s = ir.sec.sec_list[i] 
-
-        l = len(s.opm) 
+        s = ir.sec_list[i] 
         
         if num_actual_sv_leaks > 0: 
             is_actual_sec_vec = True 
@@ -170,9 +181,24 @@ def leak_IsoRing_into_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,ratio_of_dim
             num_valid_bounds -= 1 
         else: 
             is_valid_bounds = False 
+        
+        seq_index = s.seq_index()
+        if is_actual_sec_vec: 
+            optima_point_index = seq_index
+        else: 
+            ix = [_ for _ in range(len(s.opm))]
+            ix2 = ix.index(seq_index)
+            ix.pop(ix2)
+
+            if len(ix) != 0: 
+                ix3 = prg_() % len(ix)
+                optima_point_index = ix.pop(ix3) 
+            else: 
+                optima_point_index = 0 
+        is_actual_sec_vec = False 
 
         bounds,hop_size,pr_value = prng_leak_Secret(s,prng=prng,is_actual_sec_vec=is_actual_sec_vec,\
-            is_valid_bounds=is_valid_bounds,optima_point_index=None)
+            is_valid_bounds=is_valid_bounds,optima_point_index=optima_point_index)
 
         D[i] = (bounds,hop_size,pr_value) 
     return D 
