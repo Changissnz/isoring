@@ -46,7 +46,9 @@ class IsoRing:
     def idn_tag(self): 
         return self.sec_list[0].idn_tag 
 
-    def set_iso_repr(self): 
+    def set_iso_repr(self,i):
+        assert 0 <= i < len(self.sec_list) 
+        self.current_sec_index = i 
 
     def iso_repr(self): 
         return self.sec_list[self.current_sec_index]
@@ -60,11 +62,13 @@ class IsoRing:
             s.ds = ds
             s.cds = cds 
 
-
     def clear_depANDcodep_sets(self): 
         for s in self.sec_list:
             s.ds.clear()
             s.cds.clear() 
+
+    def actual_sec_vec(self): 
+        return self.sec_list[self.actual_sec_index].seq 
 
     """
     feedback_function_type := 0 for euclidean point distance, 1 for prng noise added. 
@@ -73,6 +77,8 @@ class IsoRing:
     def generate_IsoRing_from_one_secret(sec,prng,feedback_function_type,\
         num_blooms=DEFAULT_NUM_BLOOMS,dim_range=DEFAULT_BLOOM_VECTOR_DIM_RANGE,\
         sec_vec_multiplier_range=DEFAULT_BLOOM_MULTIPLIER_RANGE,optima_multiplier_range=DEFAULT_BLOOM_MULTIPLIER_RANGE): 
+
+        assert feedback_function_type in {0,1}
 
         bos = BloomOfSecret(sec,prng,num_blooms=DEFAULT_NUM_BLOOMS,dim_range=DEFAULT_BLOOM_VECTOR_DIM_RANGE,\
         sec_vec_multiplier_range=DEFAULT_BLOOM_MULTIPLIER_RANGE,optima_multiplier_range=DEFAULT_BLOOM_MULTIPLIER_RANGE)
@@ -85,8 +91,12 @@ class IsoRing:
 
         l = [i for i in range(bos.num_blooms + 1)]
         l = prg_seqsort(l,prg_)
-        sec_list = [bos.allsec[l[i]] for i in l] 
-        actual_sec_index = l[0]
+        sec_list = [bos.all_sec[l[i]] for i in l] 
+        actual_sec_index = l[0] 
 
-        feedback_function = prng_point_distance_funtion(prng)
+        if feedback_function_type: 
+            feedback_function = prng_point_distance_funtion(prng)
+        else: 
+            feedback_function = euclidean_point_distance
+
         return IsoRing(sec_list,feedback_function,actual_sec_index=actual_sec_index)
