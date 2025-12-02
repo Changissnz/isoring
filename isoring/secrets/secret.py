@@ -38,6 +38,14 @@ def default_std_numpy_prvec(vec_length,integer_seed=None):
         S = np.sum(X) 
     return X 
 
+"""
+Representation of a secret information, a vector of real numbers. Additional features 
+include a map of optima to probability values. One of the optima is the vector that is the 
+secret information. There are also two sets, a dependency map and a codependency map, containing 
+identifier tags for secrets that must be cracked before this instance or cracked alongside this 
+instance. These sets are used for situations of information retrieval where order-of-operations 
+are necessary.
+"""
 class Sec:
 
     def __init__(self,sequence,optima_pr_map,dep_set=set(),codep_set=set(),idn_tag=0):

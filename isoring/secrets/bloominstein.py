@@ -3,11 +3,16 @@ from math import ceil
 
 DEFAULT_BLOOM_VECTOR_DIM_RANGE = [2,15] 
 DEFAULT_NUM_BLOOMS = 6 
+DEFAULT_BLOOM_MULTIPLIER_RANGE = [0.5,2.0]
 
+"""
+Used to calculate additional <Sec> instances given a base <Sec>. These additional <Sec>s are 
+calculated with the aid of a pseudo-random number generator, `prng`, and accomodating parameters. 
+"""
 class BloomOfSecret: 
 
     def __init__(self,sec,prng,num_blooms=DEFAULT_NUM_BLOOMS,dim_range=DEFAULT_BLOOM_VECTOR_DIM_RANGE,\
-        sec_vec_multiplier_range=[0.5,2.0],optima_multiplier_range=[0.5,2.0]): 
+        sec_vec_multiplier_range=DEFAULT_BLOOM_MULTIPLIER_RANGE,optima_multiplier_range=DEFAULT_BLOOM_MULTIPLIER_RANGE): 
 
         assert type(sec) == Sec 
         assert is_valid_range(dim_range,True,False) and dim_range[0] > 0
