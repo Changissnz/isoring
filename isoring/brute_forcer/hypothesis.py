@@ -17,3 +17,16 @@ class HypStruct:
         self.hop_size = hop_size
         self.probability_marker = probability_marker
         return
+
+    """
+    method is port for receiving feedback information from <IsoRing> 
+    """
+    def register_pointANDpr(self,point,pr): 
+
+        if not point_in_bounds(self.suspected_subbound,point): 
+            return False 
+
+        if pr != self.probability_marker: 
+            return False 
+
+        return True 

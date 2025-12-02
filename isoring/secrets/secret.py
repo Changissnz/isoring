@@ -1,9 +1,13 @@
-from morebs2.matrix_methods import is_vector,is_valid_range,vector_to_string,string_to_vector,equal_iterables
+from morebs2.matrix_methods import is_vector,is_valid_range,vector_to_string,\
+    string_to_vector,equal_iterables,is_vector 
 from morebs2.numerical_generator import prg__LCG,modulo_in_range
 import numpy as np 
 import random 
 import pickle 
 from collections import defaultdict 
+
+DEFAULT_SINGLETON_DISTANCE_RANGE = 10.0 
+DEFAULT_NUM_OPTIMA_RANGE = [2,10]
 
 def default_std_Python_prng(integer_seed=None,output_range=[-10**6,10**6],rounding_depth=0): 
     if type(integer_seed) == int:
@@ -37,6 +41,10 @@ def default_std_numpy_prvec(vec_length,integer_seed=None):
         X = np.round(X / S,6) 
         S = np.sum(X) 
     return X 
+
+def one_vec(prng,dimension,singleton_range):  
+    v = [modulo_in_range(prng(),singleton_range) for _ in range(dimension)]
+    return np.round(np.array(v),5) 
 
 """
 Representation of a secret information, a vector of real numbers. Additional features 
@@ -111,16 +119,26 @@ class Sec:
 
         assert type(num_optima) == int and num_optima >= 1 
 
-        def one_vec(): 
-            v = [modulo_in_range(prng(),singleton_range) for _ in range(dimension)]
-            return np.round(np.array(v),5) 
 
         # the secret 
-        seq = one_vec() 
+        seq = one_vec(prng,dimension,singleton_range) 
+
+        ## 
+        return Sec.vec_to_bare_instance(seq,0,num_optima,prng,idn_tag,set_actual_as_max_pr)
+
+    @staticmethod
+    def vec_to_bare_instance(vec,singleton_distance,num_optima,prng,idn_tag=0,set_actual_as_max_pr:bool=False):
+        assert is_vector(vec) 
+
+        min_value,max_value = np.min(vec),np.max(vec) 
+        singleton_range = [min_value - singleton_distance,max_value + singleton_distance] 
+
+        ## 
 
         # the alternatives 
-        other_seqs = [one_vec() for _ in range(num_optima -1)] 
-        other_seqs.insert(0,seq)
+        dimension = len(vec) 
+        other_seqs = [one_vec(prng,dimension,singleton_range) for _ in range(num_optima -1)] 
+        other_seqs.insert(0,vec)
 
         stringized_seqs = set()
         for s in other_seqs:
@@ -132,7 +150,7 @@ class Sec:
         #       `num_optima`. 
         prvec = default_std_numpy_prvec(vec_length=len(stringized_seqs),integer_seed=int(prng())) 
         stringized_seqs = sorted(stringized_seqs) 
-        seq_ = vector_to_string(seq,float) 
+        seq_ = vector_to_string(vec,float) 
         i = stringized_seqs.index(seq_) 
         x = stringized_seqs.pop(i) 
         stringized_seqs.insert(0,x) 
@@ -146,7 +164,7 @@ class Sec:
         for s,p in zip(stringized_seqs,prvec): 
             opm[s] = p 
 
-        return Sec(seq,opm,dep_set=set(),codep_set=set(),idn_tag=idn_tag)
+        return Sec(vec,opm,dep_set=set(),codep_set=set(),idn_tag=idn_tag)
 
     #----------------- methods to represent <Sec>'s optima points as matrices and indices 
 
