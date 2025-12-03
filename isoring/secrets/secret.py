@@ -1,6 +1,6 @@
 from morebs2.matrix_methods import is_vector,is_valid_range,vector_to_string,\
     string_to_vector,equal_iterables,is_vector 
-from morebs2.numerical_generator import prg__LCG,modulo_in_range
+from morebs2.numerical_generator import prg__LCG,prg__n_ary_alternator,modulo_in_range
 import numpy as np 
 import random 
 import pickle 

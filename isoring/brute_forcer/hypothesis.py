@@ -4,19 +4,27 @@ from morebs2.matrix_methods import is_proper_bounds_vector
 
 class HypStruct:
 
-    def __init__(self,seq_idn:int,suspected_subbound,hop_size,probability_marker):
-        assert type(seq_idn) == int 
+    def __init__(self,opt_index:int,suspected_subbound,hop_size,probability_marker):
+        assert type(opt_index) == int 
         assert is_proper_bounds_vector(suspected_subbound) 
         assert type(hop_size) == int and hop_size > 1 
         assert type(probability_marker) in {type(None),float,np.float32,np.float64}, "got {}".format(type(probability_marker))
         if type(probability_marker) != type(None): 
             assert 0 <= probability_marker <= 1 
 
-        self.seq_idn = seq_idn 
+        self.opt_index = opt_index 
         self.suspected_subbound = suspected_subbound
         self.hop_size = hop_size
         self.probability_marker = probability_marker
         return
+
+    def __str__(self): 
+        s = "\t\tHypothesis" + "\n"
+        s += "* opt index: " + str(self.opt_index) + "\n"
+        s += "* suspected subbound: \n" + str(self.suspected_subbound) + "\n\n"
+        s += "* hop size: " + str(self.hop_size) + "\n"
+        s += "* probability: " + str(self.probability_marker) + "\n"
+        return s 
 
     """
     - dict, sec index -> HypStruct 
@@ -30,7 +38,7 @@ class HypStruct:
         D2 = {} 
 
         for k,v in D.items(): 
-            D2[k] = HypStruct(k,v[0],v[1],v[2]) 
+            D2[k] = HypStruct(v[0],v[1],v[2],v[3]) 
         return D2 
 
     """

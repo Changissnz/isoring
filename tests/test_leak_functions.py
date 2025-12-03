@@ -124,7 +124,7 @@ class LeakFunctions(unittest.TestCase):
         i = 0
         for k,v in D.items(): 
             sec = ir.sec_list[k]
-            i += int(bounds_cover_actual_sec_vec(sec,v[0])) 
+            i += int(bounds_cover_actual_sec_vec(sec,v[1])) 
         assert i == len(ir.sec_list) 
 
         D2 = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=10**-6,valid_bounds_ratio=1.0,\
@@ -146,8 +146,8 @@ class LeakFunctions(unittest.TestCase):
         i,j = 0,0
         for k,v in D4.items(): 
             sec = ir.sec_list[k]
-            i += int(bounds_cover_actual_sec_vec(sec,v[0]))
-            j += int(bounds_cover_one_optima_point_of_sec(sec,v[0])) 
+            i += int(bounds_cover_actual_sec_vec(sec,v[1]))
+            j += int(bounds_cover_one_optima_point_of_sec(sec,v[1])) 
         assert i == 0 and j == 7 
 
         D5 = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio=0.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=0.0,\
@@ -156,8 +156,8 @@ class LeakFunctions(unittest.TestCase):
         i,j = 0,0
         for k,v in D5.items(): 
             sec = ir.sec_list[k]
-            i += int(bounds_cover_actual_sec_vec(sec,v[0]))
-            j += int(bounds_cover_one_optima_point_of_sec(sec,v[0])) 
+            i += int(bounds_cover_actual_sec_vec(sec,v[1]))
+            j += int(bounds_cover_one_optima_point_of_sec(sec,v[1])) 
         assert i == j == 0 
 
 if __name__ == '__main__':

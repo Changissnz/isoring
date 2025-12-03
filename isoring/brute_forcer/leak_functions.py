@@ -140,7 +140,7 @@ def prng_leak_Secret(sec,prng=None,is_actual_sec_vec:bool=True,is_valid_bounds:b
 
 """
 return:
-- dict, sec index -> (bounds,hop_size,pr_value)
+- dict, sec index -> (optima point index,bounds,hop_size,pr_value)
 """
 def prng_leak_IsoRing_into_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=1.0,\
     prioritize_actual_Sec:bool=True): 
@@ -200,5 +200,5 @@ def prng_leak_IsoRing_into_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,ratio_o
         bounds,hop_size,pr_value = prng_leak_Secret(s,prng=prng,is_actual_sec_vec=is_actual_sec_vec,\
             is_valid_bounds=is_valid_bounds,optima_point_index=optima_point_index)
 
-        D[i] = (bounds,hop_size,pr_value) 
+        D[i] = (optima_point_index,bounds,hop_size,pr_value) 
     return D 

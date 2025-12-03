@@ -19,10 +19,14 @@ def std_cracking_function(ir:IsoRing,hs:HypStruct):
         # calculate feedback vector 
         fvec = ir.provide_feedback_distance_vec(vec)  
 
+        # case: wrong dimension 
+        if type(fvec) == type(None): 
+            return None,None 
+
         # no processing of feedback in this cracking function 
         process_feedback(fvec)
 
-        opt_point,opt_index,opt_pr = guess_equals_one_feedback(vec)
+        opt_point,opt_index,opt_pr = ir.guess_equals_one_feedback(vec)
         
         # case: not an optima point 
         if type(opt_point) == type(None): 
@@ -61,13 +65,17 @@ class Crackling:
 
 class CBridge:
 
-    def __init__(self,cr:Crackling,hs:HypStruct,ir:IsoRing,cracking_func=std_cracking_function): 
+    def __init__(self,cr:Crackling,hs:HypStruct,ir:IsoRing,cracking_func=std_cracking_function,\
+        verbose=False): 
         assert type(cr) == Crackling 
         assert type(hs) == HypStruct 
         assert type(ir) == IsoRing 
+        assert type(verbose) == bool 
+
         self.cr = cr 
         self.hs = hs 
         self.ir = ir 
+        self.verbose = verbose 
 
         self.cracking_process = cracking_func(self.ir,self.hs)
         self.terminated = False 
@@ -77,13 +85,16 @@ class CBridge:
         if self.terminated: return 
 
         point,bool_stat,fin_stat = self.cracking_process()
+        if self.verbose: 
+            print("i: ",self.cr.num_attempts)
+            print("-------------------------------") 
 
         if type(point) != type(None): 
             self.terminated = True
-            self.cr.crack_soln = point 
+            self.cr.cracked_soln = point 
             self.cr.soln_pr = bool_stat 
         else: 
             if fin_stat: 
                 self.terminated = True 
-        
+
         self.cr.num_attempts += 1
