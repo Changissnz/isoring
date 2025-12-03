@@ -28,6 +28,38 @@ class IsoRing:
         self.current_sec_index = actual_sec_index
         return
 
+    #------------------------ functions to accept guesses (cracking attempts) from third-party 
+
+    """
+    return: 
+    - optima point, optima point index, probability value 
+    """
+    def guess_equals_one_feedback(self,point):
+        sec = self.iso_repr() 
+
+        opt_pts = sec.optima_points()
+
+        for (i,o) in enumerate(opt_pts):
+            dist = None 
+            stat = None 
+            pr = None 
+            try: 
+                dist = euclidean_point_distance(o,point)
+                stat = dist < 0.05 
+            except: 
+                return None,None,None
+
+            if stat: 
+                pr = self.provide_feedback_pr(vector_to_string(o,float)) 
+                assert pr != -1 
+                return o,i,pr 
+        return None,None,None 
+
+    """
+    return: 
+    - vector of feedback scores, length equal to number of optima points for 
+                                iso_repr. 
+    """
     def provide_feedback_distance_vec(self,i):
         s = self.iso_repr() 
         opt_points = s.optima_points() 
@@ -47,6 +79,8 @@ class IsoRing:
         if stringized_opt_point not in s.opm: return -1 
         return s.opm[stringized_opt_point]
 
+    #----------------------------- repr functions 
+
     def idn_tag(self): 
         return self.sec_list[0].idn_tag 
 
@@ -60,6 +94,15 @@ class IsoRing:
     def reset_iso_repr(self): 
         self.current_sec_index = self.actual_sec_index
 
+    def actual_sec_vec(self): 
+        return self.sec_list[self.actual_sec_index].seq 
+
+    #------------------- dep/codep functions 
+
+    def dc_set(self,is_dep:bool=True):
+        s = self.sec_list[0]
+        return s.ds if is_dep else s.cds 
+
     def assign_DC_set(self,ds,cds):
         assert type(ds) == set 
         for s in self.sec_list:
@@ -70,13 +113,6 @@ class IsoRing:
         for s in self.sec_list:
             s.ds.clear()
             s.cds.clear() 
-
-    def actual_sec_vec(self): 
-        return self.sec_list[self.actual_sec_index].seq 
-
-    def dc_set(self,is_dep:bool=True):
-        s = self.sec_list[0]
-        return s.ds if is_dep else s.cds 
 
     """
     feedback_function_type := 0 for euclidean point distance, 1 for prng noise added. 
