@@ -17,16 +17,10 @@ class IsoRingedChain:
         ooc,stat =IsoRingedChain.calculate_OOC_for_IsoRing_list(ir_list)
         assert stat 
 
-        self.ir_list = ir_list
+        self.ir_dict = {ir.idn_tag(): ir for ir in ir_list}
         self.ooc = ooc 
 
         return
-
-    def actual_vec_map(self): 
-        D = dict()
-        for ir in self.ir_list:
-            D[ir.idn_tag()] = ir.actual_sec_vec() 
-        return D 
 
     @staticmethod
     def prng__add_depANDcodep_to_IsoRingList(ir_list,prng,codep_ratio=0.0):
@@ -41,7 +35,6 @@ class IsoRingedChain:
             ir_dict[ir.idn_tag()] = ir
         
         oodc = IsoRingedChain.prng__idns_to_order_of_depANDcodep(idns,prng,codep_ratio)
-
         for j in range(len(oodc)): 
             depset = set() 
             for i in range(0,j): 
@@ -63,7 +56,6 @@ class IsoRingedChain:
 
         total_conn = len(idns) - 1 
         codep_conn = int(ceil(total_conn * codep_ratio))
-
         L = prg_seqsort(idns,prg_) 
         L_ = []
 
@@ -74,10 +66,12 @@ class IsoRingedChain:
             l = L.pop(i)
             S |= {l}
 
-            for _ in range(x): 
+            for _ in range(x):
+                if len(L) == 0: break  
                 i = prg_() % len(L)
                 l = L.pop(i)
                 S |= {l} 
+            
             L_.append(S) 
             codep_conn -= x 
         
@@ -190,8 +184,10 @@ class IsoRingedChain:
         # get the <Sec> indexes with feedback function type 1
         num_sec_ftype_1 = int(ceil(ratio_of_feedback_functions_type_1 * len(sec_list))) 
         index_list = [_ for _ in range(len(sec_list))] 
+
         ftype_1_indices = prg_choose_n(index_list,num_sec_ftype_1,prg_,is_unique_picker=True)
 
+        ir_list = [] 
         for (i,sec) in enumerate(sec_list): 
             # transform each <Sec> into an <IsoRing> 
             feedback_function_type = 1 if i in ftype_1_indices else 0 

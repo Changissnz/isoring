@@ -17,6 +17,19 @@ def IsoRing_list_sample_Q():
     IsoRingedChain.prng__add_depANDcodep_to_IsoRingList(ir_list,prng,codep_ratio=0.3)
     return ir_list 
 
+def IsoRingedChain_Accessories_sample_R():
+
+    prng = prg__LCG(66,3,7,3212) 
+    prng2 = prg__LCG(16.36,13.23,74.1434,37177.05) 
+
+    vec_lengths = [4,8,9,13] 
+    vec_list = [] 
+    for i in range(0,15): 
+        qi = i % 4
+        vec_list.append(one_vec(prng2,vec_lengths[qi],[-2000.,2000.])) 
+
+    return vec_list,prng,prng2 
+
 ### lone file test 
 """
 python3 -m tests.test_big_secret  
@@ -38,7 +51,7 @@ class IsoRingedChainClass(unittest.TestCase):
         for y in Y2: 
             if len(y) == 1: continue 
             s += len(y) - 1 
-        assert s == ceil(0.5 * (len(X) - 1)) 
+        assert s == ceil(0.5 * (len(X) - 1)), "got {} wanted {}".format(s,ceil(0.5 * (len(X) - 1)))
         return 
 
 
@@ -96,6 +109,34 @@ class IsoRingedChainClass(unittest.TestCase):
         ooc,stat = IsoRingedChain.calculate_OOC_for_IsoRing_list(irings)
         assert not stat 
         return 
+
+    def test__IsoRingedChain__list_of_vectors_to_IsoRingedChain__case1(self): 
+        
+        vec_list,prng,prng2 = IsoRingedChain_Accessories_sample_R()
+        irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list,prng2,num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1])
+
+        dsize = 0 
+        csize = 0 
+        for ir in irc.ir_dict.values(): 
+            dsize += len(ir.dc_set(True))
+            csize += len(ir.dc_set(False)) 
+
+        assert dsize == 105 == csize + 105 
+        return
+
+    def test__IsoRingedChain__list_of_vectors_to_IsoRingedChain__case2(self): 
+        vec_list,prng,prng2 = IsoRingedChain_Accessories_sample_R()
+        irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list,prng,num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1],\
+            codep_ratio=1.0)
+
+        dsize = 0 
+        csize = 0 
+        for ir in irc.ir_dict.values(): 
+            dsize += len(ir.dc_set(True))
+            csize += len(ir.dc_set(False)) 
+
+        assert dsize == 26
+        assert csize == 158
 
 if __name__ == '__main__':
     unittest.main()
