@@ -63,7 +63,7 @@ class IsoRingedChain:
         L = prg_seqsort(idns,prg_) 
         L_ = []
 
-        while codep_conn > 0: 
+        while codep_conn > 0 and len(L) > 0: 
             x = modulo_in_range(prg_(),[1,codep_conn+1]) 
             S = set() 
             i = prg_() % len(L)
@@ -78,7 +78,6 @@ class IsoRingedChain:
             
             L_.append(S) 
             codep_conn -= x 
-        
 
         while len(L) > 0: 
             L_.append({L.pop(0)})
@@ -124,7 +123,6 @@ class IsoRingedChain:
                 return None,False 
 
         # check for contradictions in second scan
-        
         for i in range(len(ooc)): 
             index, stat = IsoRingedChain.order_element_in_OOC(ir_dict,ooc,i)
             if index != -1: 

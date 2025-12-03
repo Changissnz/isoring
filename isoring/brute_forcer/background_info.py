@@ -5,8 +5,8 @@ from ..secrets.big_secret import *
 def prng_to_decimal_output(prng):
 
     def f(): 
-        q1 = prng() 
-        q2 = prng()
+        q1 = abs(prng()) 
+        q2 = abs(prng())
         if q1 == 0 or q2 == 0: return 0.0 
 
         if q1 < q2: return q1 / q2
@@ -47,7 +47,7 @@ class BackgroundInfo:
         q = set(info.keys()) 
         c = set() 
         for o in order_of_cracking: c |= o 
-        assert o == c 
+        assert q == c 
 
         self.info = info 
         self.suspected_isoring_to_sec_idn = suspected_isoring_to_sec_idn
@@ -81,10 +81,22 @@ class BackgroundInfo:
         prng_dec = prng_to_decimal_output(prng) 
 
         info = dict() 
-        for idn_tag,ir in irc.ir_dict.items(): 
-            actual_sec_vec_ratio = modulo_in_range(prng_dec(),actual_sec_vec_ratio_range)
-            ratio_of_dim_covered = modulo_in_range(prng_dec(),dim_covered_ratio_range) 
-            valid_bounds_ratio = modulo_in_range(prng_dec(),valid_bounds_ratio_range)
+        for idn_tag,ir in irc.ir_dict.items():
+            if actual_sec_vec_ratio_range[0] == actual_sec_vec_ratio_range[1]: 
+                actual_sec_vec_ratio = actual_sec_vec_ratio_range[0]
+            else: 
+                actual_sec_vec_ratio = modulo_in_range(prng_dec(),actual_sec_vec_ratio_range)
+
+            if dim_covered_ratio_range[0] == dim_covered_ratio_range[1]: 
+                ratio_of_dim_covered = dim_covered_ratio_range[0]
+            else: 
+                ratio_of_dim_covered = modulo_in_range(prng_dec(),dim_covered_ratio_range) 
+
+            if valid_bounds_ratio_range[0] == valid_bounds_ratio_range[1]: 
+                valid_bounds_ratio = valid_bounds_ratio_range[0] 
+            else: 
+                valid_bounds_ratio = modulo_in_range(prng_dec(),valid_bounds_ratio_range)
+
             prioritize_actual_Sec = prng_dec() <= prioritize_actual_Sec_ratio
 
             hdict = HypStruct.extract_from_IsoRing_into_HypStruct_dict(ir,prng,actual_sec_vec_ratio,\
@@ -100,7 +112,7 @@ class BackgroundInfo:
             ir = irc.fetch_IsoRing(k)
             
             # case: correct <Sec> index 
-            actual = ir.actual_sec_index()
+            actual = ir.actual_sec_index
             if k not in L: 
                 S[k] = actual 
             else: 
@@ -117,7 +129,6 @@ class BackgroundInfo:
         num_swaps = int(ceil(shuffle_OOC_ratio * len(irc.ooc)))
         ooc = n_swaps_on_seq(deepcopy(irc.ooc),num_swaps,prg_)
 
-        ##
         return BackgroundInfo(info,S,ooc) 
 
     def sec_index_for_IsoRing(self,ir_idn): 

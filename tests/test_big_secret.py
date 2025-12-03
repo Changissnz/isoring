@@ -141,5 +141,22 @@ class IsoRingedChainClass(unittest.TestCase):
         L = set([len(o) for o in irc.ooc])
         assert L == {2,13} 
 
+    def test__IsoRingedChain__list_of_vectors_to_IsoRingedChain__case3(self):
+        prng = prg__LCG(-66,3,7,-3212) 
+        prng2 = prg__LCG(16.36,13.23,74.1434,37177.05) 
+        def prng3(): return prng() + prng2() 
+
+        vec_lengths = [4,8,9,13] 
+        vec_list = [] 
+        for i in range(0,15): 
+            qi = i % 4
+            vec_list.append(one_vec(prng2,vec_lengths[qi],[-2000.,2000.])) 
+
+        try: 
+            irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list,prng3,\
+                num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1],codep_ratio=1.0)
+        except: 
+            assert False 
+
 if __name__ == '__main__':
     unittest.main()

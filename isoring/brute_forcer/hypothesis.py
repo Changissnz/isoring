@@ -8,8 +8,8 @@ class HypStruct:
         assert type(seq_idn) == int 
         assert is_proper_bounds_vector(suspected_subbound) 
         assert type(hop_size) == int and hop_size > 1 
-        assert type(probability_marker) in {type(None),float}
-        if type(probability_marker) == float: 
+        assert type(probability_marker) in {type(None),float,np.float32,np.float64}, "got {}".format(type(probability_marker))
+        if type(probability_marker) != type(None): 
             assert 0 <= probability_marker <= 1 
 
         self.seq_idn = seq_idn 

@@ -31,7 +31,7 @@ every output vector sums to 1.0
 def default_std_numpy_prvec(vec_length,integer_seed=None):
     assert vec_length >= 1 and type(vec_length) == int 
     if type(integer_seed) == int:
-        np.random.seed(integer_seed)
+        np.random.seed(abs(integer_seed))
 
     X = np.random.rand(vec_length)
     S = np.sum(X) 
