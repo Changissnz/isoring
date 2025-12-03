@@ -162,7 +162,6 @@ class IsoRingedChain:
         ooc.insert(x,q) 
         return x,True   
 
-    # TODO: test this. 
     @staticmethod 
     def list_of_vectors_to_IsoRingedChain(vec_list,prng,num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1],
         ratio_of_feedback_functions_type_1:float=1.0,codep_ratio=0.0):  
