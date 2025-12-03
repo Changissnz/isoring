@@ -22,6 +22,10 @@ class IsoRingedChain:
 
         return
 
+    def fetch_IsoRing(self,ir_idn):
+        if ir_idn not in self.ir_dict: return None 
+        return self.ir_dict[ir_idn] 
+
     @staticmethod
     def prng__add_depANDcodep_to_IsoRingList(ir_list,prng,codep_ratio=0.0):
         assert len(ir_list) > 0 

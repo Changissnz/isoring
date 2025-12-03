@@ -19,6 +19,21 @@ class HypStruct:
         return
 
     """
+    - dict, sec index -> HypStruct 
+    """
+    @staticmethod 
+    def extract_from_IsoRing_into_HypStruct_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,\
+        ratio_of_dim_covered=1.0,valid_bounds_ratio=1.0,prioritize_actual_Sec:bool=True): 
+
+        D = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio,ratio_of_dim_covered,\
+            valid_bounds_ratio,prioritize_actual_Sec) 
+        D2 = {} 
+
+        for k,v in D.items(): 
+            D2[k] = HypStruct(k,v[0],v[1],v[2]) 
+        return D2 
+
+    """
     method is port for receiving feedback information from <IsoRing> 
     """
     def register_pointANDpr(self,point,pr): 
