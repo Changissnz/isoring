@@ -8,13 +8,6 @@ def index_in_OOC(ooc,element):
             return i 
     return -1
 
-"""
-
-"""
-class IsoRingedChainCMem: 
-
-    def __init__(self): 
-
 class IsoRingedChain:
 
     def __init__(self,ir_list,prng=None): 
