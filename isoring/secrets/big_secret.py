@@ -6,11 +6,18 @@ def index_in_OOC(ooc,element):
     for (i,c) in enumerate(ooc): 
         if element in c: 
             return i 
-    return -1  
+    return -1
+
+"""
+
+"""
+class IsoRingedChainCMem: 
+
+    def __init__(self): 
 
 class IsoRingedChain:
 
-    def __init__(self,ir_list): 
+    def __init__(self,ir_list,prng=None): 
         for ir in ir_list: assert type(ir) == IsoRing
         
         # check for valid order of cracking 
@@ -20,7 +27,50 @@ class IsoRingedChain:
         self.ir_dict = {ir.idn_tag(): ir for ir in ir_list}
         self.ooc = ooc 
 
+        # information used in defensive procedure against Cracker 
+        if type(prng) == type(None): 
+            self.prng = default_std_Python_prng(output_range=[-10000,10000],rounding_depth=0) 
+        else: 
+            self.prng = prng 
+
+        self.cmem = []
+        self.finished_targets = [] 
+        self.current_ir_target = set()  
         return
+
+    #------------------- methods to interact with <Cracker>
+
+    def set_current_ir_targetset(self,targetset):
+        assert type(targetset) == set 
+        if not self.accept_cracker_targetset(targetset): 
+            return False 
+        self.current_ir_target = targetset 
+        return True 
+
+    """
+    Cracker targets instance in units of <IsoRing> sets. 
+    Method uses method<accept_cracker_target>. 
+    """
+    def accept_cracker_targetset(self,targetset): 
+        for t in targetset: 
+            if not self.accept_cracker_target(t): return False 
+        return True 
+
+    """
+    responds with boolean if Cracker can proceed with targeting 
+    <IsoRing> `target_ir_idn`, based on 
+    """
+    def accept_cracker_target(self,target_ir_idn): 
+        ir = self.fetch_IsoRing(target_ir_idn)  
+        if type(ir) == type(None): return False 
+
+        dep = ir.dc_set(True) 
+        if dep.intersection(self.finished_targets) != dep: 
+            return False 
+        return True 
+
+
+    #-------------------------------------------------------- 
 
     def fetch_IsoRing(self,ir_idn):
         if ir_idn not in self.ir_dict: return None 

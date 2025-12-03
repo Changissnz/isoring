@@ -61,8 +61,18 @@ class Crackling:
         self.num_attempts = 0 
         self.cracked_soln = None
         self.soln_pr = None 
+
+        self.has_bridged = False 
         return
 
+    def has_soln(self): 
+        return type(self.cracked_soln) != type(None) and \
+            type(self.soln_pr) != type(None) 
+
+"""
+Cracking bridge. Environment for <Crackling> to attempt cracking an <IsoRing> using a 
+<HypStruct>. 
+"""
 class CBridge:
 
     def __init__(self,cr:Crackling,hs:HypStruct,ir:IsoRing,cracking_func=std_cracking_function,\
@@ -78,6 +88,7 @@ class CBridge:
         self.verbose = verbose 
 
         self.cracking_process = cracking_func(self.ir,self.hs)
+        self.cr.has_bridged = True 
         self.terminated = False 
         return
 

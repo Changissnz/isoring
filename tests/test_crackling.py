@@ -37,6 +37,7 @@ class CBridgeClass(unittest.TestCase):
 
         hs = hs_dict[6] 
 
+        # subcase: wrong answer, Crackling accepts as correct answer 
         cr = Crackling(ir.idn_tag(),ir.actual_sec_index,hs.opt_index) 
         cb = CBridge(cr,hs,ir)
 
@@ -50,6 +51,7 @@ class CBridgeClass(unittest.TestCase):
         hs_ = deepcopy(hs) 
         hs_.probability_marker += 0.05 
 
+        # subcase: wrong answer, Crackling does not accept as correct answer 
         cr2 = Crackling(ir.idn_tag(),ir.actual_sec_index,hs.opt_index)
         cb2 = CBridge(cr2,hs_,ir)
         while not cb2.terminated: 
@@ -92,6 +94,18 @@ class CBridgeClass(unittest.TestCase):
         assert np.all(cr4.cracked_soln == np.array([ -4.6239 , -10.55495])) 
         assert cr4.num_attempts == 18, "got {}".format(cr4.num_attempts)
         assert cr4.soln_pr
+
+            ## subcase: correct for repr3, <Crackling> does not accept as 
+            ##          correct answer 
+        hs3.probability_marker += 0.05 
+        cr5 = Crackling(ir.idn_tag(),ir.current_sec_index,hs3.opt_index)
+        cb5 = CBridge(cr5,hs3,ir)
+        while not cb5.terminated: 
+            next(cb5) 
+
+        assert np.all(cr5.cracked_soln == np.array([ -4.6239 , -10.55495])) 
+        assert cr5.num_attempts == 18, "got {}".format(cr5.num_attempts)
+        assert not cr5.soln_pr
         return 
 
 if __name__ == '__main__':

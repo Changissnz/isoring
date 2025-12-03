@@ -54,6 +54,14 @@ class BackgroundInfo:
         self.order_of_cracking = order_of_cracking
         return
 
+    def hypothesis_exists_for_IsoRingANDSec(self,i,s): 
+        if i not in self.info: 
+            return False 
+        
+        if s not in self.info[i]: 
+            return False 
+        return True 
+
     @staticmethod
     def verify_valid_info(info): 
         for k,v in info.items(): 

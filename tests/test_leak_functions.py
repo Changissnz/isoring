@@ -65,6 +65,9 @@ class LeakFunctions(unittest.TestCase):
                 return 
         assert False
 
+    """
+    correct target local optimum 
+    """
     def test__prng_leak_Secret__case1(self): 
         sec,prng = SecANDprng_sample_X() 
 
@@ -79,6 +82,9 @@ class LeakFunctions(unittest.TestCase):
 
         assert i == 2208,"got {}".format(i)
 
+    """
+    correct target local optimum 
+    """
     def test__prng_leak_Secret__case2(self): 
         sec,prng = SecANDprng_sample_X() 
         bounds,hop_size,pr_value = prng_leak_Secret(sec,prng,is_actual_sec_vec=True,is_valid_bounds=False)
@@ -96,6 +102,9 @@ class LeakFunctions(unittest.TestCase):
         assert not stat0 and not stat1
         return
 
+    """
+    incorrect target local optimum 
+    """
     def test__prng_leak_Secret__case3(self): 
         sec,prng = SecANDprng_sample_X() 
         bounds,hop_size,pr_value = prng_leak_Secret(sec,prng,is_actual_sec_vec=False,is_valid_bounds=True)
@@ -137,9 +146,13 @@ class LeakFunctions(unittest.TestCase):
 
         assert list(D3.keys())[0] != ir.actual_sec_index
 
+    """
+    incorrect target local optimum 
+    """
     def test__prng_leak_IsoRing_into_dict__case2(self): 
         ir,prng = IsoRingANDprng_sample_X()
         
+        # subcase: valid bounds 
         D4 = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio=0.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=1.0,\
             prioritize_actual_Sec=False)
 
@@ -150,6 +163,7 @@ class LeakFunctions(unittest.TestCase):
             j += int(bounds_cover_one_optima_point_of_sec(sec,v[1])) 
         assert i == 0 and j == 7 
 
+        # subcase: invalid bounds 
         D5 = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio=0.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=0.0,\
             prioritize_actual_Sec=False)
 

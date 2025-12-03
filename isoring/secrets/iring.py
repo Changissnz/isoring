@@ -26,6 +26,8 @@ class IsoRing:
         self.feedback_function = feedback_function
         self.actual_sec_index = actual_sec_index
         self.current_sec_index = actual_sec_index
+
+        self.cracked_sec_indices = [] 
         return
 
     #------------------------ functions to accept guesses (cracking attempts) from third-party 
@@ -96,6 +98,29 @@ class IsoRing:
 
     def actual_sec_vec(self): 
         return self.sec_list[self.actual_sec_index].seq 
+
+    #---------------------------- switch of repr functions, for use in cracking situations 
+
+    def register_cracked_sec_index(self,prng): 
+        # case: already cracked 
+        if self.current_sec_index in self.cracked_sec_indices: 
+            return 
+
+        def prg_(): return int(prng())
+
+        # case: register as cracked 
+        self.cracked_sec_indices.append(self.current_sec_index) 
+
+            # switch to another <Sec>
+        available = [_ for _ in range(len(self.sec_list)) if _ not in self.cracked_sec_indices]  
+            # case: none left 
+        if len(available) == 0: 
+            return 
+
+        i = int(prng()) % len(available)
+        i = available[i] 
+        self.set_iso_repr(i) 
+        return 
 
     #------------------- dep/codep functions 
 
