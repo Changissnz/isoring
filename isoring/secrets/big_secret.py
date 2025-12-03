@@ -1,11 +1,25 @@
 from .iring import * 
 from morebs2.numerical_generator import prg_choose_n
+from copy import deepcopy 
+
+def index_in_OOC(ooc,element): 
+    for (i,c) in enumerate(ooc): 
+        if element in c: 
+            return i 
+    return -1  
 
 class IsoRingedChain:
 
     def __init__(self,ir_list): 
         for ir in ir_list: assert type(ir) == IsoRing
-        self.ir_list = ir_list  
+        
+        # check for valid order of cracking 
+        ooc,stat =IsoRingedChain.calculate_OOC_for_IsoRing_list(ir_list)
+        assert stat 
+
+        self.ir_list = ir_list
+        self.ooc = ooc 
+
         return
 
     def actual_vec_map(self): 
@@ -24,7 +38,7 @@ class IsoRingedChain:
         for ir in ir_list:
             idns.append(ir.idn_tag()) 
             ir.clear_depANDcodep_sets()
-            ir_dict[ir.idn_tag] = ir 
+            ir_dict[ir.idn_tag()] = ir
         
         oodc = IsoRingedChain.prng__idns_to_order_of_depANDcodep(idns,prng,codep_ratio)
 
@@ -73,6 +87,86 @@ class IsoRingedChain:
 
         L_ = prg_seqsort(L_,prg_)
         return L_
+
+    """
+    Calculates an order-of-cracking for the list of 
+    <IsoRing>s. During this calculation, determines if 
+    dependencies and codependencies of every <IsoRing> 
+    result in consistentn <IsoRingedChain>. 
+    """
+    @staticmethod 
+    def calculate_OOC_for_IsoRing_list(ir_list): 
+        ir_dict = {ir.idn_tag():ir for ir in ir_list} 
+        ooc = [] 
+
+        # start with codependencies and verify
+        for ir in ir_list:
+            cds = ir.dc_set(False)
+            cds = cds | {ir.idn_tag()} 
+            qi = index_in_OOC(ooc,ir.idn_tag()) 
+
+            if qi == -1: 
+                ooc.append(cds) 
+                continue 
+
+            if ooc[qi] != cds: 
+                return None,False
+
+        # order elements in first scan
+        qx = deepcopy(ooc) 
+        for i in range(len(ooc)):
+            rx = qx[i]
+            rx_ = next(iter(rx)) 
+            j = index_in_OOC(ooc,rx_)
+
+            index,stat = IsoRingedChain.order_element_in_OOC(ir_dict,ooc,j) 
+
+            # case: error, co-dep cannot be dep 
+            if not stat: 
+                return None,False 
+
+        # check for contradictions in second scan
+        
+        for i in range(len(ooc)): 
+            index, stat = IsoRingedChain.order_element_in_OOC(ir_dict,ooc,i)
+            if index != -1: 
+                return None,False 
+
+        return ooc, True 
+
+    """
+    Auxiliary method for <calculate_OOC_for_IsoRing_list>.
+    """
+    @staticmethod
+    def order_element_in_OOC(ir_dict,ooc,index):
+
+        cds = ooc[index]
+        # get all dependencies 
+        dep = set() 
+        for idn in cds:  
+            ir = ir_dict[idn] 
+            dep |= ir.dc_set(True) 
+
+        # case: codependencies cannot be dependencies 
+        inter = dep.intersection(ooc[index]) 
+        if len(inter) > 0: 
+            return None,False  
+
+
+        qi = index 
+        x = None  
+        for i in range(index + 1,len(ooc)): 
+            inter = dep.intersection(ooc[i])  
+            if len(inter) > 0: 
+                x = i 
+        
+        if type(x) == type(None): 
+            return -1,True 
+
+        # pop element 
+        q = ooc.pop(index) 
+        ooc.insert(x,q) 
+        return x,True   
 
     # TODO: test this. 
     @staticmethod 

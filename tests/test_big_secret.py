@@ -1,6 +1,22 @@
 from isoring.secrets.big_secret import * 
 import unittest
 
+def IsoRing_list_sample_Q(): 
+    prng = prg__LCG(66,3,7,3212) 
+
+    ir_list = [] 
+    for i in range(15): 
+        sec = Sec.generate_bare_instance([-60.,1112.],5,6,prng,idn_tag=i,set_actual_as_max_pr=False)
+
+        ir = IsoRing.generate_IsoRing_from_one_secret(sec,prng,0,\
+            num_blooms=DEFAULT_NUM_BLOOMS,dim_range=DEFAULT_BLOOM_VECTOR_DIM_RANGE,\
+            sec_vec_multiplier_range=DEFAULT_BLOOM_MULTIPLIER_RANGE,
+            optima_multiplier_range=DEFAULT_BLOOM_MULTIPLIER_RANGE)
+        ir_list.append(ir) 
+
+    IsoRingedChain.prng__add_depANDcodep_to_IsoRingList(ir_list,prng,codep_ratio=0.3)
+    return ir_list 
+
 ### lone file test 
 """
 python3 -m tests.test_big_secret  
@@ -25,6 +41,61 @@ class IsoRingedChainClass(unittest.TestCase):
         assert s == ceil(0.5 * (len(X) - 1)) 
         return 
 
+
+    def test__IsoRingedChain__calculate_OOC_for_IsoRing_list__case1(self): 
+
+        ir_list = IsoRing_list_sample_Q()
+        ooc,stat = IsoRingedChain.calculate_OOC_for_IsoRing_list(ir_list)
+        assert stat
+
+        sol = [{0, 12}, {4}, {5}, {6}, {8, 3, 11, 7}, {13}, {1}, {2}, {9, 14}, {10}]
+        assert ooc == sol 
+
+    def test__IsoRingedChain__calculate_OOC_for_IsoRing_list__case2(self): 
+
+        ir_list = IsoRing_list_sample_Q()
+
+
+        ## case 1 
+        irings = ir_list[:6] 
+
+        for ir in irings: 
+            ir.clear_depANDcodep_sets() 
+
+        irings[0].assign_DC_set({1,2,3},set())
+        irings[1].assign_DC_set({0,2,3},set())
+        irings[2].assign_DC_set({3},set())
+
+
+        ooc,stat = IsoRingedChain.calculate_OOC_for_IsoRing_list(irings)
+        assert not stat 
+
+        ## case 2 
+        for ir in irings: 
+            ir.clear_depANDcodep_sets() 
+
+        irings[0].assign_DC_set(set(),{1,2})
+        irings[1].assign_DC_set(set(),{1,2})
+        irings[2].assign_DC_set(set(),{1,2}) 
+        irings[3].assign_DC_set({1,2},{0}) 
+
+        ooc,stat = IsoRingedChain.calculate_OOC_for_IsoRing_list(irings)
+        assert not stat 
+
+        ## case 3 
+        for ir in irings: 
+            ir.clear_depANDcodep_sets()
+
+        irings[0].assign_DC_set({1},set())
+        irings[1].assign_DC_set({2},set())
+        irings[2].assign_DC_set({3},set())
+        irings[3].assign_DC_set(set(),set())
+        irings[4].assign_DC_set({1,2,5},set())
+        irings[5].assign_DC_set({0},set())
+
+        ooc,stat = IsoRingedChain.calculate_OOC_for_IsoRing_list(irings)
+        assert not stat 
+        return 
 
 if __name__ == '__main__':
     unittest.main()

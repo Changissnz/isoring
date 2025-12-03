@@ -14,7 +14,7 @@ class BackgroundInfo:
     # <BackgroundInfo> uses method<default_most_likely_Sec_index_for_IsoRing> to decide 
     # the best <HypStruct>. 
     def __init__(self,info:dict,suspected_isoring_to_sec_idn:dict,order_of_cracking:list): 
-        assert BackgroundInfo.verify_correct_info(info) 
+        assert BackgroundInfo.verify_valid_info(info) 
 
         q = set(info.keys()) 
         c = set() 
@@ -27,7 +27,7 @@ class BackgroundInfo:
         return
 
     @staticmethod
-    def verify_correct_info(info): 
+    def verify_valid_info(info): 
         for k,v in info.items(): 
             if not type(k) == int: return False 
             for k2,v2 in v.items(): 

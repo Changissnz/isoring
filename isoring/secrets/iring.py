@@ -74,6 +74,10 @@ class IsoRing:
     def actual_sec_vec(self): 
         return self.sec_list[self.actual_sec_index].seq 
 
+    def dc_set(self,is_dep:bool=True):
+        s = self.sec_list[0]
+        return s.ds if is_dep else s.cds 
+
     """
     feedback_function_type := 0 for euclidean point distance, 1 for prng noise added. 
     """
