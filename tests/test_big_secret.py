@@ -138,5 +138,8 @@ class IsoRingedChainClass(unittest.TestCase):
         assert dsize == 26
         assert csize == 158
 
+        L = set([len(o) for o in irc.ooc])
+        assert L == {2,13} 
+
 if __name__ == '__main__':
     unittest.main()
