@@ -54,6 +54,11 @@ class BackgroundInfo:
         self.order_of_cracking = order_of_cracking
         return
 
+    def hypothesis_for_IsoRingANDSec(self,i,s): 
+        if not self.hypothesis_exists_for_IsoRingANDSec(i,s): 
+            return None 
+        return self.info[i][s] 
+
     def hypothesis_exists_for_IsoRingANDSec(self,i,s): 
         if i not in self.info: 
             return False 

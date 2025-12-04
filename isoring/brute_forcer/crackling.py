@@ -63,7 +63,17 @@ class Crackling:
         self.soln_pr = None 
 
         self.has_bridged = False 
+        self.terminated = False 
         return
+
+    def __str__(self): 
+        S = "* Target IsoRing: " + str(self.target_ir) + "\n"
+        S += "* Sec index: " + str(self.ir_sec_index) + "\n"
+        S += "* optima index: " + str(self.sec_opt_index) + "\n"
+        S += "* attempts: " + str(self.num_attempts) + "\n"
+        S += "* terminated: " + str(self.terminated) + "\n"
+        S += "* accept solution: " + str(self.soln_pr) + "\n"
+        return S 
 
     def has_soln(self): 
         return type(self.cracked_soln) != type(None) and \
@@ -92,6 +102,9 @@ class CBridge:
         self.terminated = False 
         return
 
+    def __str__(self): 
+        return "CBRIDGE WITH HYP" + "\n" + str(self.hs)
+
     def __next__(self): 
         if self.terminated: return 
 
@@ -100,12 +113,20 @@ class CBridge:
             print("i: ",self.cr.num_attempts)
             print("-------------------------------") 
 
+        if fin_stat: 
+            self.terminated = True 
+
         if type(point) != type(None): 
             self.terminated = True
             self.cr.cracked_soln = point 
             self.cr.soln_pr = bool_stat 
+            self.cr.terminated = True 
+            if self.verbose: print("[got point] terminated @",self.cr.num_attempts)
+
         else: 
             if fin_stat: 
-                self.terminated = True 
+                #self.terminated = True 
+                self.cr.terminated = True 
+                if self.verbose: print("[no point] terminated @",self.cr.num_attempts)
 
         self.cr.num_attempts += 1

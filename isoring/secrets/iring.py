@@ -99,8 +99,17 @@ class IsoRing:
     def actual_sec_vec(self): 
         return self.sec_list[self.actual_sec_index].seq 
 
+    def fetch_Sec(self,i): 
+        assert type(i) == int 
+        assert 0 <= i < len(self.sec_list)
+        return self.sec_list[i] 
+
     #---------------------------- switch of repr functions, for use in cracking situations 
 
+    """
+    return:
+    - ?any uncracked Sec remaining? 
+    """
     def register_cracked_sec_index(self,prng): 
         # case: already cracked 
         if self.current_sec_index in self.cracked_sec_indices: 
@@ -115,12 +124,12 @@ class IsoRing:
         available = [_ for _ in range(len(self.sec_list)) if _ not in self.cracked_sec_indices]  
             # case: none left 
         if len(available) == 0: 
-            return 
+            return False 
 
         i = int(prng()) % len(available)
         i = available[i] 
         self.set_iso_repr(i) 
-        return 
+        return True 
 
     #------------------- dep/codep functions 
 

@@ -26,8 +26,8 @@ class IsoRingedChain:
         else: 
             self.prng = prng 
 
-        self.cmem = []
-        self.finished_targets = [] 
+        # set of IsoRing identifiers 
+        self.finished_targetset = set()
         self.current_ir_target = set()  
         return
 
@@ -58,10 +58,31 @@ class IsoRingedChain:
         if type(ir) == type(None): return False 
 
         dep = ir.dc_set(True) 
-        if dep.intersection(self.finished_targets) != dep: 
+        if dep.intersection(self.finished_targetset) != dep: 
             return False 
         return True 
 
+    #------------------------------------------------------- 
+
+    def repr_dict_for_IsoRings(self,isoring_idn): 
+        D = {} 
+        for i in isoring_idn: 
+            I = self.fetch_IsoRing(i)
+            assert type(I) != type(None) 
+            D[I.idn_tag()] = I.current_sec_index
+        return D 
+ 
+    def register_cracked_IsoRings(self,wanted_finishes:set,recracks:set): 
+        self.finished_targetset |= wanted_finishes
+
+        Q = wanted_finishes | recracks 
+        for q in Q: 
+            self.shift_IsoRing(q)  
+        return 
+
+    def shift_IsoRing(self,ir_idn): 
+        I = self.fetch_IsoRing(ir_idn)
+        return I.register_cracked_sec_index(self.prng)
 
     #-------------------------------------------------------- 
 
