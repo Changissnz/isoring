@@ -4,6 +4,10 @@ a component from the terminated project, puissec.
 A structure called the `IsoRingedChain` is supposed to guard a big secret, comprised of a sequence 
 of arbitrarily-lengthed vectors (secrets). 
 
+Current version on pypi.org:  
+----------------------------  
+0.1.1 
+
 # What is a Secret? 
 
 Who knows, really?  
@@ -128,7 +132,7 @@ methods do come in handy since there are a lot of variables to type up by hand.
 
 ![Screenshot](screeshantaya.png)  
 
-Project is also up on `pypi.org` now. Install with  
+Project is also up on `pypi.org`. Install with  
 `pip install isoring`.  
 
 Here is an example of use.  
