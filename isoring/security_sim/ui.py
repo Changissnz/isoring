@@ -19,7 +19,6 @@ def prompt_vec_filepath():
     fp = input("[?] enter in filepath of vectors:  ")
     fp = fp.strip()
     irc = load_vector_file_into_IsoRingedChain(fp,prng=default_std_Python_prng())
-    return irc 
 
     try: 
         irc = load_vector_file_into_IsoRingedChain(fp,prng=default_std_Python_prng())
