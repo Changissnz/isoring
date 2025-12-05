@@ -99,7 +99,7 @@ A structure called a `SearchSpaceIterator` is employed by every `Crackling` to e
 cracking attempts on an `IsoRing`'s isomorphic representation. `SearchSpaceIterator` outputs `k x h` 
 points that uniformly cover the input bounds of matrix `k x 2`. 
 
-If the `Cracker` does not a `HypStruct` for the `IsoRing`'s isomorphic representation (the second 
+If the `Cracker` does not have a `HypStruct` for the `IsoRing`'s isomorphic representation (the second 
 layer in the three-layer hypothesis map), program halts `Cracker` midway. If the `Crackling` is 
 successful in cracking the isomorphic representation, `IsoRing` has to switch its isomorphic representation 
 to an uncracked `Sec`. If there are none that have not been cracked, `IsoRing` stops switching its 

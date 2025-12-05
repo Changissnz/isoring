@@ -15,7 +15,7 @@ def prompt_vec_filepath():
     print("\t[!] secrets are vectors.")
     print("\t[!] vectors must be present on every line.")
     print("\t[!] vectors must range in length between 1 through 5.")
-
+    print("\t[!] EX:  101,110,100,111\n") 
     fp = input("[?] enter in filepath of vectors:  ")
     fp = fp.strip()
 
