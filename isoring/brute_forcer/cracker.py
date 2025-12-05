@@ -167,12 +167,12 @@ class Cracker:
             # case: extra Crackling for cracked (IsoRing,Sec)
             if c.target_ir in finished_ir_for_cracklings: 
                 if self.verbose: print("-- Cracker clears extra crackling targeting IsoRing {}".format(c.target_ir))
-                self.energy -= c.num_attempts 
+                ##self.energy -= c.num_attempts 
                 self.active_cracklings.pop(l) 
                 continue 
 
             if c.terminated: 
-                self.energy -= c.num_attempts 
+                ##self.energy -= c.num_attempts 
                 # case: solution acquired 
                 if self.verbose: 
                     print("-- Crackling DONE.")

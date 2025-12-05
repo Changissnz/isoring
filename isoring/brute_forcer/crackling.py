@@ -27,7 +27,6 @@ def std_cracking_function(ir:IsoRing,hs:HypStruct):
         process_feedback(fvec)
 
         opt_point,opt_index,opt_pr = ir.guess_equals_one_feedback(vec)
-        
         # case: not an optima point 
         if type(opt_point) == type(None): 
             return None,None
@@ -103,10 +102,10 @@ class CBridge:
         return
 
     def __str__(self): 
-        return "CBRIDGE WITH HYP" + "\n" + str(self.hs)
+        return "CBRIDGE ON ISORING {} WITH HYP\n{}\n".format(self.ir.idn_tag(),str(self.hs)) 
 
     def __next__(self): 
-        if self.terminated: return 
+        if self.terminated: return 0 
 
         point,bool_stat,fin_stat = self.cracking_process()
         if self.verbose: 
@@ -130,3 +129,4 @@ class CBridge:
                 if self.verbose: print("[no point] terminated @",self.cr.num_attempts)
 
         self.cr.num_attempts += 1
+        return 1 

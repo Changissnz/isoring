@@ -24,7 +24,8 @@ class BruteForceEnvClass(unittest.TestCase):
         vec_list,prng = veclistANDprng_sample_U() 
         prng2 = prg__LCG(-43,-45,61,-7171)
         irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list[:3],prng2,\
-            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,codep_ratio=0.9)
+            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,\
+            codep_ratio=0.9,shuffle_isorepr=False)
         bi = BackgroundInfo.extract_from_IsoRingedChain(irc,prng,[0.0,0.0],[1.0,1.0],\
                 [1.0,1.0],0.0,0.0,0.0)
 
@@ -53,24 +54,25 @@ class BruteForceEnvClass(unittest.TestCase):
         vec_list,prng = veclistANDprng_sample_U() 
         prng2 = prg__LCG(-43,-45,61,-7171)
         irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list[:3],prng2,\
-            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,codep_ratio=0.9)
+            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,\
+            codep_ratio=0.9,shuffle_isorepr=False)
         bi = BackgroundInfo.extract_from_IsoRingedChain(irc,prng,[1.0,1.0],[1.0,1.0],\
                 [1.0,1.0],0.0,0.0,0.0)
 
-        crck = Cracker(bi,10,10,True)  
+        crck = Cracker(bi,10,100,True)  
         bfe = BruteForceEnv(crck,irc,prng,True) 
 
         assert not crck.halted 
         while not bfe.is_finished(): 
             next(bfe) 
-        assert crck.halted 
-        assert len(crck.csoln) == 1 
+        assert crck.halted
+        assert len(crck.csoln) == 2, "got {}".format(crck.csoln.D)
 
         soln = crck.soln_for_IsoRing(2)
         ir = irc.fetch_IsoRing(2) 
         V = ir.actual_sec_vec()
         assert np.all(soln[1] == V)
-        assert bfe.num_iter == 16, "got {}".format(bfe.num_iter)
+        assert bfe.num_iter == 65, "got {}".format(bfe.num_iter)
 
         print("-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/")
         return
@@ -83,7 +85,8 @@ class BruteForceEnvClass(unittest.TestCase):
         vec_list,prng = veclistANDprng_sample_U() 
 
         irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list,prng,\
-            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,codep_ratio=0.0)
+            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,\
+            codep_ratio=0.0,shuffle_isorepr=False)
 
         bi = BackgroundInfo.extract_from_IsoRingedChain(irc,prng,[0.0,0.0],[1.0,1.0],\
                 [1.0,1.0],1.0,0.0,0.0)
@@ -129,7 +132,8 @@ class BruteForceEnvClass(unittest.TestCase):
 
         prng2 = prg__LCG(-43,-45,61,-7171)
         irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list,prng2,\
-            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,codep_ratio=0.9)
+            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,\
+            codep_ratio=0.9,shuffle_isorepr=False)
         bi = BackgroundInfo.extract_from_IsoRingedChain(irc,prng,[0.0,0.0],[1.0,1.0],\
                 [1.0,1.0],1.0,0.0,1.0)
 
@@ -159,24 +163,25 @@ class BruteForceEnvClass(unittest.TestCase):
 
         prng2 = prg__LCG(-43,-45,61,-7171)
         irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list[:3],prng2,\
-            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,codep_ratio=0.9)
+            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,\
+            codep_ratio=0.9,shuffle_isorepr=False) 
         bi = BackgroundInfo.extract_from_IsoRingedChain(irc,prng,[1.0,1.0],[1.0,1.0],\
                 [1.0,1.0],0.0,0.0,0.0)
 
-        crck = Cracker(bi,10,10)  
+        crck = Cracker(bi,10,100)  
         bfe = BruteForceEnv(crck,irc,prng,True) 
 
         assert not crck.halted 
         while not bfe.is_finished(): 
             next(bfe) 
          
-        assert len(crck.csoln) == 1 
+        assert len(crck.csoln) == 2,"got {}".format(crck.csoln.D)
 
         soln = crck.soln_for_IsoRing(2)
         ir = irc.fetch_IsoRing(2) 
         V = ir.actual_sec_vec()
         assert np.all(soln[1] == V)
-        assert bfe.num_iter == 16, "got {}".format(bfe.num_iter)
+        assert bfe.num_iter == 65, "got {}".format(bfe.num_iter)
 
         print("-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/")
 
@@ -190,7 +195,8 @@ class BruteForceEnvClass(unittest.TestCase):
 
         prng2 = prg__LCG(-43,-45,61,-7171)
         irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list[:5],prng2,\
-            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,codep_ratio=0.9)
+            num_blooms_range=[DEFAULT_NUM_BLOOMS-2,DEFAULT_NUM_BLOOMS+1],ratio_of_feedback_functions_type_1=0.0,\
+            codep_ratio=0.9,shuffle_isorepr=False)
         bi = BackgroundInfo.extract_from_IsoRingedChain(irc,prng,[1.0,1.0],[1.0,1.0],\
                 [0.0,0.0],0.0,0.0,0.0)
 

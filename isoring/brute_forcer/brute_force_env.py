@@ -4,6 +4,9 @@ def one_to_one_IsoRing2Crackling_map(ir_idn:set):
     assert type(ir_idn) == set 
     return {i:1 for i in ir_idn} 
 
+# used for long cracking sessions 
+DEFAULT_MARKER = 10000 
+
 """
 environment for a Cracker, given background information on an IsoRingedChain, to conduct brute-force guesses 
 against it. 
@@ -24,11 +27,14 @@ class BruteForceEnv:
         self.verbose = verbose 
 
         self.cbridges = [] 
-
         self.num_iter = 0 
         return
 
     def __next__(self): 
+        if self.verbose: 
+            if self.num_iter % DEFAULT_MARKER == 0: 
+                print("\t[!] iteration marker: ",self.num_iter)
+
         # case: finished 
         if self.is_finished(): return 
 
@@ -44,13 +50,13 @@ class BruteForceEnv:
 
     # TODO: finish 
     def is_finished(self): 
+        self.crck.is_finished()
         if self.crck.halted: 
             return True 
         return False 
 
     def run_cbridges(self): 
         any_terminated = False 
-
         i = 0 
         while i < len(self.cbridges): 
             c = self.cbridges[i] 
@@ -58,7 +64,8 @@ class BruteForceEnv:
                 any_terminated = True 
                 self.cbridges.pop(i)
                 continue 
-            next(c) 
+            r = next(c) 
+            self.crck.energy -= r 
             i += 1 
             
 

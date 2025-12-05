@@ -1,9 +1,180 @@
+	[!] iteration marker:  0
 -- Cracker cracks at index: 0
 [!] t=0, Adding initial cracking bridges to IsoRings
-{1}
+{0, 4}
 
 -- Crackling DONE.
-* Target IsoRing: 1
+* Target IsoRing: 0
+* Sec index: 5
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 4
+* Sec index: 6
+* optima index: 3
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{0, 4}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 0
+* Sec index: 6
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 4
+* Sec index: 5
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+{4}
+	- recracking on IsoRings
+{0}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 0
+* Sec index: 4
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{0}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 0
+* Sec index: 0
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{0}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 0
+* Sec index: 2
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{0}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 0
+* Sec index: 3
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{0}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 0
+* Sec index: 1
+* optima index: 2
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+{0}
+	- recracking on IsoRings
+set()
+=======================================================
+-- Cracker cracks at index: 1
+[!] t=14, Adding initial cracking bridges to IsoRings
+{3, 7}
+
+-- Crackling DONE.
+* Target IsoRing: 3
+* Sec index: 0
+* optima index: 3
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 7
+* Sec index: 4
+* optima index: 1
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{3, 7}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 3
+* Sec index: 3
+* optima index: 3
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 7
+* Sec index: 6
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{3, 7}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 3
+* Sec index: 5
+* optima index: 10
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 7
 * Sec index: 1
 * optima index: 1
 * attempts: 1
@@ -12,60 +183,20 @@
 
 # BRIDGES:  0
 	- finished cracking on IsoRings
-{1}
-	- recracking on IsoRings
 set()
+	- recracking on IsoRings
+{3, 7}
 =======================================================
--- Cracker cracks at index: 1
-[!] t=2, Adding initial cracking bridges to IsoRings
-{3, 4}
-
 -- Crackling DONE.
 * Target IsoRing: 3
-* Sec index: 5
-* optima index: 4
+* Sec index: 6
+* optima index: 2
 * attempts: 1
 * terminated: True
 * accept solution: True
 
 -- Crackling DONE.
-* Target IsoRing: 4
-* Sec index: 0
-* optima index: 5
-* attempts: 1
-* terminated: True
-* accept solution: True
-
-# BRIDGES:  0
-	- finished cracking on IsoRings
-{3, 4}
-	- recracking on IsoRings
-set()
-=======================================================
--- Cracker cracks at index: 2
-[!] t=4, Adding initial cracking bridges to IsoRings
-{0}
-
--- Crackling DONE.
-* Target IsoRing: 0
-* Sec index: 1
-* optima index: 0
-* attempts: 1
-* terminated: True
-* accept solution: True
-
-# BRIDGES:  0
-	- finished cracking on IsoRings
-{0}
-	- recracking on IsoRings
-set()
-=======================================================
--- Cracker cracks at index: 3
-[!] t=6, Adding initial cracking bridges to IsoRings
-{2}
-
--- Crackling DONE.
-* Target IsoRing: 2
+* Target IsoRing: 7
 * Sec index: 2
 * optima index: 2
 * attempts: 1
@@ -74,23 +205,343 @@ set()
 
 # BRIDGES:  0
 	- finished cracking on IsoRings
-{2}
+set()
+	- recracking on IsoRings
+{3, 7}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 3
+* Sec index: 1
+* optima index: 5
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 7
+* Sec index: 3
+* optima index: 5
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{3, 7}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 3
+* Sec index: 2
+* optima index: 6
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 7
+* Sec index: 5
+* optima index: 4
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{3, 7}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 3
+* Sec index: 4
+* optima index: 1
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 7
+* Sec index: 0
+* optima index: 1
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+{3, 7}
 	- recracking on IsoRings
 set()
 =======================================================
--- Cracker cracks at index: 4
-[!] t=8, Adding initial cracking bridges to IsoRings
+-- Cracker cracks at index: 2
+[!] t=28, Adding initial cracking bridges to IsoRings
+{1, 2, 5, 6}
+
+-- Crackling DONE.
+* Target IsoRing: 1
+* Sec index: 1
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 2
+* Sec index: 2
+* optima index: 1
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 5
+* Sec index: 1
+* optima index: 2
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 6
+* Sec index: 0
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{1, 2, 5, 6}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 1
+* Sec index: 2
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 2
+* Sec index: 0
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 5
+* Sec index: 2
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 6
+* Sec index: 1
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{1, 2, 5, 6}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 1
+* Sec index: 6
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 2
+* Sec index: 4
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 5
+* Sec index: 5
+* optima index: 1
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 6
+* Sec index: 4
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{1, 2, 5, 6}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 1
+* Sec index: 5
+* optima index: 1
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 2
+* Sec index: 6
+* optima index: 2
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 5
+* Sec index: 3
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 6
+* Sec index: 2
+* optima index: 1
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+set()
+	- recracking on IsoRings
+{1, 2, 5, 6}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 1
+* Sec index: 4
+* optima index: 5
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 2
+* Sec index: 5
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 5
+* Sec index: 4
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 6
+* Sec index: 3
+* optima index: 1
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+{6}
+	- recracking on IsoRings
+{1, 2, 5}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 1
+* Sec index: 3
+* optima index: 1
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 2
+* Sec index: 3
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 5
+* Sec index: 0
+* optima index: 0
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+{2}
+	- recracking on IsoRings
+{1, 5}
+=======================================================
+-- Crackling DONE.
+* Target IsoRing: 1
+* Sec index: 0
+* optima index: 6
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+-- Crackling DONE.
+* Target IsoRing: 5
+* Sec index: 6
+* optima index: 4
+* attempts: 1
+* terminated: True
+* accept solution: True
+
+# BRIDGES:  0
+	- finished cracking on IsoRings
+{1, 5}
+	- recracking on IsoRings
+set()
+=======================================================
+-- Cracker cracks at index: 3
+[!] t=42, Adding initial cracking bridges to IsoRings
 set()
 
 [X] no new target IsoRings. DONE.
 ------ CRACKER SOLUTION SYNOPSIS
-[-] IsoRing 0: (0, array([4.540e+02, 2.323e+03, 6.723e+03, 4.000e+00, 2.500e+01]), np.True_)
+[-] IsoRing 0: (2, array([2.34235356e+12, 3.00000000e+00, 3.43000000e+02, 5.25200000e+03,
+       4.22000000e+02]), np.True_)
 
-[-] IsoRing 1: (1, array([ 24121.,  34634., 234231.]), np.True_)
+[-] IsoRing 1: (6, array([  67.     , 1345.67834,   49.325  ,  100.1212 ]), np.True_)
 
-[-] IsoRing 2: (2, array([2352.]), np.True_)
+[-] IsoRing 2: (0, array([1.4212000e+04, 6.7234523e+07, 7.6346000e+04]), np.True_)
 
-[-] IsoRing 3: (4, array([ 52343., 342141., 231421.]), np.True_)
+[-] IsoRing 3: (1, array([  56666.45454, 7818181.     ]), np.True_)
 
-[-] IsoRing 4: (5, array([4656., 3233.]), np.True_)
+[-] IsoRing 4: (0, array([1.00000e+02, 5.60000e+01, 3.22224e+05, 9.00000e+03]), np.True_)
 
+[-] IsoRing 5: (4, array([56423523.]), np.True_)
+
+[-] IsoRing 6: (1, array([ 24.       ,  43.       ,  67.8997754, 455.       ]), np.True_)
+
+[-] IsoRing 7: (1, array([56.]), np.True_)
+
+[$] remaining Cracker energy: 52.0

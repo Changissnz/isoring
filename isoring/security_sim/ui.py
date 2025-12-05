@@ -18,7 +18,6 @@ def prompt_vec_filepath():
 
     fp = input("[?] enter in filepath of vectors:  ")
     fp = fp.strip()
-    irc = load_vector_file_into_IsoRingedChain(fp,prng=default_std_Python_prng())
 
     try: 
         irc = load_vector_file_into_IsoRingedChain(fp,prng=default_std_Python_prng())
@@ -101,6 +100,8 @@ def ui_method():
         next(bfe) 
     
     bfe.crck.soln_synopsis() 
+
+    print("[$] remaining Cracker energy: {}".format(bfe.crck.energy)) 
     fobj.close() 
     sys.stdout = original_stdout
     

@@ -27,7 +27,7 @@ def load_vector_file_into_IsoRingedChain(fp,prng=default_std_Python_prng()):
     
     return IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list,prng=default_std_Python_prng(),\
         num_blooms_range=[DEFAULT_NUM_BLOOMS-1,DEFAULT_NUM_BLOOMS],\
-        ratio_of_feedback_functions_type_1=1.0,codep_ratio=codep_ratio)
+        ratio_of_feedback_functions_type_1=1.0,codep_ratio=codep_ratio,shuffle_isorepr=True)
 
 def simulation_default_BackgroundInfo_for_IsoRingedChain(irc,prng,allow_inaccuracies:bool,\
     allow_incomplete_info:bool,allow_wrong_OOC:bool,allow_one_shot_kill:bool):

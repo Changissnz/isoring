@@ -13,7 +13,8 @@ def IsoRingedChainANDprng_sample_T():
         vec_list.append(one_vec(prng2,vec_lengths[qi],[-2000.,2000.])) 
 
     irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list,prng3,\
-        num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1],codep_ratio=0.4)
+        num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1],codep_ratio=0.4,\
+        shuffle_isorepr=False)
 
     return irc,prng3 
 

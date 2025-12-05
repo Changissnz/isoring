@@ -113,7 +113,9 @@ class IsoRingedChainClass(unittest.TestCase):
     def test__IsoRingedChain__list_of_vectors_to_IsoRingedChain__case1(self): 
         
         vec_list,prng,prng2 = IsoRingedChain_Accessories_sample_R()
-        irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list,prng2,num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1])
+        irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(\
+            vec_list,prng2,num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1],
+            shuffle_isorepr=False)
 
         dsize = 0 
         csize = 0 
@@ -127,7 +129,7 @@ class IsoRingedChainClass(unittest.TestCase):
     def test__IsoRingedChain__list_of_vectors_to_IsoRingedChain__case2(self): 
         vec_list,prng,prng2 = IsoRingedChain_Accessories_sample_R()
         irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list,prng,num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1],\
-            codep_ratio=1.0)
+            codep_ratio=1.0,shuffle_isorepr=False)
 
         dsize = 0 
         csize = 0 
@@ -154,7 +156,8 @@ class IsoRingedChainClass(unittest.TestCase):
 
         try: 
             irc = IsoRingedChain.list_of_vectors_to_IsoRingedChain(vec_list,prng3,\
-                num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1],codep_ratio=1.0)
+                num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1],codep_ratio=1.0,\
+                shuffle_isorepr=True) 
         except: 
             assert False 
 

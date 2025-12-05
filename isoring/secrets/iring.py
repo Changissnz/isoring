@@ -121,6 +121,10 @@ class IsoRing:
         self.cracked_sec_indices.append(self.current_sec_index) 
 
             # switch to another <Sec>
+        self.switch_iso_repr(prng)
+        return True 
+
+    def switch_iso_repr(self,prng): 
         available = [_ for _ in range(len(self.sec_list)) if _ not in self.cracked_sec_indices]  
             # case: none left 
         if len(available) == 0: 
@@ -129,7 +133,6 @@ class IsoRing:
         i = int(prng()) % len(available)
         i = available[i] 
         self.set_iso_repr(i) 
-        return True 
 
     #------------------- dep/codep functions 
 

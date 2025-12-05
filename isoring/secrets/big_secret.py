@@ -230,7 +230,7 @@ class IsoRingedChain:
 
     @staticmethod 
     def list_of_vectors_to_IsoRingedChain(vec_list,prng,num_blooms_range=[DEFAULT_NUM_BLOOMS,DEFAULT_NUM_BLOOMS+1],
-        ratio_of_feedback_functions_type_1:float=1.0,codep_ratio=0.0):  
+        ratio_of_feedback_functions_type_1:float=1.0,codep_ratio=0.0,shuffle_isorepr:bool=True):  
 
         def prg_(): return int(prng()) 
 
@@ -263,5 +263,12 @@ class IsoRingedChain:
             ir_list.append(ir)
 
         IsoRingedChain.prng__add_depANDcodep_to_IsoRingList(ir_list,prng,codep_ratio)
+
+        if shuffle_isorepr: 
+            for ir in ir_list: 
+                ir.cracked_sec_indices.append(ir.actual_sec_index)
+                ir.switch_iso_repr(prng)
+                ir.cracked_sec_indices.pop(-1) 
+
         irc = IsoRingedChain(ir_list) 
         return irc 
