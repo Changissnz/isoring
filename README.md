@@ -126,4 +126,11 @@ methods do come in handy since there are a lot of variables to type up by hand.
 
 # An Example On the User Interface 
 
-![Screenshot](screeshantaya.png) 
+![Screenshot](screeshantaya.png)  
+
+Project is also up on `pypi.org` now. Install with  
+`pip install isoring`.  
+
+Here is an example of use.  
+
+![Screenshot](screeschantaya.png)  
