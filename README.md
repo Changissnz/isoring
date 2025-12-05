@@ -29,6 +29,12 @@ feedback function of `IsoRing`. For an `IsoRing` in iso-repr vector dimension `q
 `q`-vector of distance scores. Distance scores are conventionally euclidean point distances. However, there are 
 alternative feedback functions that provide distorted distance scores via pseudo-random number generator. 
 
+NOTE:  
+In this open implementation of cracking simulations involving `IsoRing`, the `Cracker` does not consider the 
+feedback function vectors. Doing so adds a layer of complication that is better placed in programs that rely 
+on this project's code. `Cracker` uses background information during its cracking attempts, instead of interpreting 
+the feedback vectors it receives every time it makes a guess on an `IsoRing`. 
+
 For a sequence of arbitrarily-lengthed vectors (secrets), an `IsoRingedChain` is used to cover it and this structure 
 is, in turn, composed of a number of `IsoRing`s equal to the number of those vectors (secrets). 
 
