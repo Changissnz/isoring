@@ -120,4 +120,4 @@ methods do come in handy since there are a lot of variables to type up by hand.
 
 # An Example On the User Interface 
 
-![Screenshot](screeschantaya.png) 
+![Screenshot](screeshantaya.png) 
