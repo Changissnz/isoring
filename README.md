@@ -4,7 +4,7 @@ a component from the terminated project, puissec.
 A structure called the `IsoRingedChain` is supposed to guard a big secret, comprised of a sequence 
 of arbitrarily-lengthed vectors (secrets). 
 
-# What is a secret? 
+# What is a Secret? 
 
 Who knows, really?  
 
@@ -36,10 +36,10 @@ is, in turn, composed of a number of `IsoRing`s equal to the number of those vec
 
 An `IsoRingedChain` guards a sequence of vectors (secrets). Any of the `IsoRing`s in an `IsoRingedChain` may be in 
 an isomorphic representation not of the same dimension of the actual secret. Additionally, every `IsoRing` in an 
-`IsoRingedChain` have dependencies and co-dependencies in order for third-party access to it. Dependencies are the 
+`IsoRingedChain` has dependencies and co-dependencies in order for third-party access to it. Dependencies are the 
 `IsoRing`s that must have been "cracked" by the third-party before getting to it, and co-dependencies are the 
 `IsoRing`s that must be "cracked" alongside it. Cracking cannot proceed by an ordering of the `IsoRing`s that 
-violate the specified dependencies and co-dependencies that link these structures together for the `IsoRingedChain`. 
+violate the specified dependencies and co-dependencies linking these structures together for the `IsoRingedChain`. 
 
 # What is Cracking? 
 
@@ -110,10 +110,14 @@ than `t`, successfully cracking the `IsoRingedChain` is impossible for the `Crac
 # What is Successful Cracking? Complete Execution or Complete Acquisition of Actual? 
 
 The complete execution of cracking all the `IsoRing`s in an `IsoRingedChain` can be known by a `Cracker` by 
-the time the program halts `Cracker`. However, the `BackgroundInfo` of a `Cracker` is what allows it to decide 
-what the actual vectors from `IsoRingedChain` are. 
+the time the program halts `Cracker`. However, the `BackgroundInfo` of a `Cracker` is what allows it to verify 
+on what the actual vectors from `IsoRingedChain` are. 
 
 # Additional Features 
 
 Generative methods, found in this program, can be used to produce the relevant data structures. These 
 methods do come in handy since there are a lot of variables to type up by hand.  
+
+# An Example On the User Interface 
+
+![Screenshot](screeschantaya.png) 

@@ -68,5 +68,25 @@ class BackgroundInfoClass(unittest.TestCase):
                 c += 1 
         assert c == 8 
 
+    """
+    demonstrates `valid one shot kill` feature
+    """
+    def test__BackgroundInfo__extract_from_IsoRingedChain__case3(self): 
+        irc,prng3 = IsoRingedChainANDprng_sample_T() 
+
+        bi2 = BackgroundInfo.extract_from_IsoRingedChain(irc,prng3,actual_sec_vec_ratio_range=[1.,1.],\
+            dim_covered_ratio_range=[1.,1.],valid_bounds_ratio_range=[1.,1.],prioritize_actual_Sec_ratio=1.,\
+            shuffle_OOC_ratio=0.5,suspected_isoring_to_sec_idn_error_ratio=0.0,valid_one_shot_kill_ratio_range=[1.,1.]) 
+
+        for k,v in bi2.info.items(): 
+            ir = irc.fetch_IsoRing(k)
+            ir.reset_iso_repr() 
+            sec = ir.iso_repr()
+            
+            hs = v[ir.actual_sec_index]
+            assert np.all(hs.suspected_subbound[:,0] == ir.actual_sec_vec()) 
+            
+        return
+
 if __name__ == '__main__':
     unittest.main()

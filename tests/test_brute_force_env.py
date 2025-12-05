@@ -35,7 +35,7 @@ class BruteForceEnvClass(unittest.TestCase):
         assert not crck.halted 
         while not bfe.is_finished():
             next(bfe) 
-        assert bfe.num_iter == 45420 
+        assert bfe.num_iter == 316, "got {}".format(bfe.num_iter)
         assert len(crck.csoln) == 3 
 
         for i in range(3): 
@@ -66,11 +66,11 @@ class BruteForceEnvClass(unittest.TestCase):
         assert crck.halted 
         assert len(crck.csoln) == 1 
 
-        soln = crck.soln_for_IsoRing(0)
-        ir = irc.fetch_IsoRing(0) 
+        soln = crck.soln_for_IsoRing(2)
+        ir = irc.fetch_IsoRing(2) 
         V = ir.actual_sec_vec()
         assert np.all(soln[1] == V)
-        assert bfe.num_iter == 21
+        assert bfe.num_iter == 16, "got {}".format(bfe.num_iter)
 
         print("-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/")
         return
@@ -92,17 +92,15 @@ class BruteForceEnvClass(unittest.TestCase):
 
         bfe = BruteForceEnv(crck,irc,prng,True) 
 
-        for i in range(15961): 
+        for i in range(50000): 
             next(bfe) 
-
-        next(bfe) 
-        for i in range(37945): 
-            next(bfe)
 
         Q = set(crck.csoln.D.keys())
 
-        Q2 = bi.order_of_cracking[:2]
-        Q2 = Q2[0] | Q2[1]
+
+        Q2 = set()
+        for x in range(6): 
+            Q2 |= bi.order_of_cracking[x] 
         assert Q == Q2 
 
         for k in Q2: 
@@ -145,8 +143,8 @@ class BruteForceEnvClass(unittest.TestCase):
 
         assert len(crck.csoln) == 4
         assert len(bfe.cbridges) == 2 == len(crck.active_cracklings)
-        assert len(crck.csoln.D[0]) == len(crck.csoln.D[15]) == 1
-        assert len(crck.csoln.D[14]) == 2
+        assert len(crck.csoln.D[0]) == len(crck.csoln.D[14]) == 1
+        assert len(crck.csoln.D[15]) == 2
 
         print("-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/")
 
@@ -174,11 +172,11 @@ class BruteForceEnvClass(unittest.TestCase):
          
         assert len(crck.csoln) == 1 
 
-        soln = crck.soln_for_IsoRing(0)
-        ir = irc.fetch_IsoRing(0) 
+        soln = crck.soln_for_IsoRing(2)
+        ir = irc.fetch_IsoRing(2) 
         V = ir.actual_sec_vec()
         assert np.all(soln[1] == V)
-        assert bfe.num_iter == 21
+        assert bfe.num_iter == 16, "got {}".format(bfe.num_iter)
 
         print("-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/")
 

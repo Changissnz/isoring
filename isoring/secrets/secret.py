@@ -42,7 +42,13 @@ def default_std_numpy_prvec(vec_length,integer_seed=None):
         S = np.sum(X) 
     return X 
 
-def one_vec(prng,dimension,singleton_range):  
+def one_vec(prng,dimension,singleton_range): 
+    assert singleton_range[0] <= singleton_range[1] 
+
+    # guarantee a range of 100 if range is 0  
+    if singleton_range[0] == singleton_range[1]: 
+        singleton_range[1] += 100 
+
     v = [modulo_in_range(prng(),singleton_range) for _ in range(dimension)]
     return np.round(np.array(v),5) 
 

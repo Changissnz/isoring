@@ -169,8 +169,9 @@ class IsoRing:
 
         l = [i for i in range(bos.num_blooms + 1)]
         l = prg_seqsort(l,prg_)
-        sec_list = [bos.all_sec[l[i]] for i in l] 
-        actual_sec_index = l[0] 
+        
+        actual_sec_index = l.index(0)
+        sec_list = [bos.all_sec[i] for i in l] 
 
         if feedback_function_type: 
             feedback_function = prng_point_distance_funtion(prng)

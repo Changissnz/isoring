@@ -66,13 +66,13 @@ class CBridgeClass(unittest.TestCase):
     def test__CBridge__next__case2(self):
         ir,_,_,_ = IsoRingANDprng_sample_Y() 
 
-        prng = prg__LCG(38,-31,45,40)
+        prng = prg__LCG(-38,-31,45,-4000)
         actual_sec_vec_ratio = 1.0 
         ratio_of_dim_covered = 10 ** -6 
         valid_bounds_ratio = 1.0 
         hs_dict2 = HypStruct.extract_from_IsoRing_into_HypStruct_dict(ir,prng,actual_sec_vec_ratio,\
                         ratio_of_dim_covered,valid_bounds_ratio,False) 
-        hs3 = hs_dict2[3] 
+        hs3 = hs_dict2[4] 
 
             ## subcase: wrong dimension 
         cr3 = Crackling(ir.idn_tag(),ir.current_sec_index,hs3.opt_index)
@@ -82,20 +82,21 @@ class CBridgeClass(unittest.TestCase):
 
         assert type(cr3.cracked_soln) == type(None) 
         assert type(cr3.soln_pr) == type(None) 
-        assert cr3.num_attempts == 26 
+        assert cr3.num_attempts == 37 
 
-            ## subcase: correct for repr 3 
-        ir.set_iso_repr(3) 
+
+            ## subcase: correct for repr 4 
+        ir.set_iso_repr(4) 
         cr4 = Crackling(ir.idn_tag(),ir.current_sec_index,hs3.opt_index)
         cb4 = CBridge(cr4,hs3,ir)
         while not cb4.terminated: 
             next(cb4) 
 
         assert np.all(cr4.cracked_soln == np.array([ -4.6239 , -10.55495])) 
-        assert cr4.num_attempts == 18, "got {}".format(cr4.num_attempts)
+        assert cr4.num_attempts == 4, "got {}".format(cr4.num_attempts)
         assert cr4.soln_pr
 
-            ## subcase: correct for repr3, <Crackling> does not accept as 
+            ## subcase: correct for repr4, <Crackling> does not accept as 
             ##          correct answer 
         hs3.probability_marker += 0.05 
         cr5 = Crackling(ir.idn_tag(),ir.current_sec_index,hs3.opt_index)
@@ -104,7 +105,7 @@ class CBridgeClass(unittest.TestCase):
             next(cb5) 
 
         assert np.all(cr5.cracked_soln == np.array([ -4.6239 , -10.55495])) 
-        assert cr5.num_attempts == 18, "got {}".format(cr5.num_attempts)
+        assert cr5.num_attempts == 4, "got {}".format(cr5.num_attempts)
         assert not cr5.soln_pr
         return 
 

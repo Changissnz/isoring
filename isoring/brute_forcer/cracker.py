@@ -195,9 +195,15 @@ class Cracker:
 
     def soln_for_IsoRing(self,ir_idn):
         sec_index = self.bi.sec_index_for_IsoRing(ir_idn)
-
         return self.csoln.fetch_soln(ir_idn,sec_index) 
 
+    def soln_synopsis(self): 
+        print("------ CRACKER SOLUTION SYNOPSIS")
+        for k in self.bi.info.keys(): 
+            q = self.soln_for_IsoRing(k)
+            print("[-] IsoRing {}: {}".format(k,q)) 
+            print()
+        
 
     """
     return:

@@ -141,7 +141,8 @@ class LeakFunctions(unittest.TestCase):
 
         assert list(D2.keys())[0] == ir.actual_sec_index
 
-        D3 = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=10**-6,valid_bounds_ratio=1.0,\
+        prng2 = prg__LCG(0,1,2,3)
+        D3 = prng_leak_IsoRing_into_dict(ir,prng2,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=10**-6,valid_bounds_ratio=1.0,\
             prioritize_actual_Sec=False)
 
         assert list(D3.keys())[0] != ir.actual_sec_index
