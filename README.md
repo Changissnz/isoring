@@ -80,7 +80,7 @@ most one hypothesis on it. And the `HypStruct` is focused on exactly one local o
 `HypStruct` represents a hypothesis on a `Sec`, of vector dimension `k`, and has these attributes.  
 1. Suspected optima index `i` of the `Sec`.  
 2. Bounds (a `k x 2` matrix) suspected to contain optima `i`.  
-3. Hop size `h`, an integer, uniformly partitioning the bounds into `k x h` points.  
+3. Hop size `h`, an integer, uniformly partitioning the bounds into `k^h` points.  
 4. Probability marker `P`, used to cross-reference with probability output value `P'` from a 
    cracked `Sec`.  
 
@@ -96,7 +96,7 @@ order to attempt to crack the `IsoRing` for the vector (secret) of the `IsoRing`
 permits until `Cracker` cracks its wanted local optimum from the suspected `Sec` of said `IsoRing`. 
 
 A structure called a `SearchSpaceIterator` is employed by every `Crackling` to execute brute-force 
-cracking attempts on an `IsoRing`'s isomorphic representation. `SearchSpaceIterator` outputs `k x h` 
+cracking attempts on an `IsoRing`'s isomorphic representation. `SearchSpaceIterator` outputs `k^h` 
 points that uniformly cover the input bounds of matrix `k x 2`. 
 
 If the `Cracker` does not have a `HypStruct` for the `IsoRing`'s isomorphic representation (the second 
