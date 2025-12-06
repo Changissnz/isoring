@@ -3,29 +3,6 @@ import sys
 
 original_stdout = sys.stdout
 
-
-def intro_message(): 
-    print("This is an interface to simulate the security strength of an arbitrary\n")
-    print("Isomorphic Ringed Chain against a third-party's brute force attempts.\n")
-    print("Simulation is not completely applicable to real-world data security threats.\n")
-    print("Use at your own discretion.")
-    print("-------------------------------------------------------------------------------")
-
-def prompt_vec_filepath(): 
-    print("\t[!] secrets are vectors.")
-    print("\t[!] vectors must be present on every line.")
-    print("\t[!] vectors must range in length between 1 through 5.")
-    print("\t[!] EX:  101,110,100,111\n") 
-    fp = input("[?] enter in filepath of vectors:  ")
-    fp = fp.strip()
-
-    try: 
-        irc = load_vector_file_into_IsoRingedChain(fp,prng=default_std_Python_prng())
-        return irc 
-    except: 
-        print("\t[!] invalid filepath OR erroneous file. try again.")
-        return prompt_vec_filepath()
-
 def bool_prompt(prompt_string): 
 
     ask = input(prompt_string) 
@@ -38,14 +15,52 @@ def bool_prompt(prompt_string):
     print("[!!] invalid input. try again.")
     return bool_prompt(prompt_string)
 
+Q_NEG = "\t0 is NO, 1 is YES" 
 Q0 = "[?] allow inaccuracies: "
 Q1 = "[?] allow incomplete info: "
 Q2 = "[?] allow wrong order of cracking: " 
 Q3 = "[?] allow one shot kill: " 
+Q4 = "[?] load Python standard random state: " 
+Q5 = "[?] save Python standard random state: " 
 
+
+def intro_message(): 
+    print("This is an interface to simulate the security strength of an arbitrary\n")
+    print("Isomorphic Ringed Chain against a third-party's brute force attempts.\n")
+    print("Simulation is not completely applicable to real-world data security threats.\n")
+    print("Use at your own discretion.")
+    print("-------------------------------------------------------------------------------")
+
+def prompt_loadORsave_std_Python_random_state(is_load:bool):
+    if is_load: 
+        S,F = Q4,load_std_Python_random_state
+    else: 
+        S,F = Q5,save_std_Python_random_state
+
+    stat = bool_prompt(S)
+    if not stat: return False 
+
+    fp = input("[?] enter in filepath:  ")
+    fp = fp.strip()
+    return F(fp)
+
+def prompt_vec_filepath(): 
+    print("\t[!] secrets are vectors.")
+    print("\t[!] vectors must be present on every line (50 vectors,50 lines max)") 
+    print("\t[!] vectors must range in length between 1 through 5.")
+    print("\t[!] EX:  101,110,100,111\n") 
+    fp = input("[?] enter in filepath of vectors:  ")
+    fp = fp.strip()
+
+    try: 
+        irc = load_vector_file_into_IsoRingedChain(fp,prng=default_std_Python_prng())
+        return irc 
+    except: 
+        print("\t[!] invalid filepath OR erroneous file. try again.")
+        return prompt_vec_filepath()
 
 def prompt_BackgroundInfo(irc): 
-    print("0 is NO, 1 is YES")    
+    print(Q_NEG)    
     q0 = bool_prompt(Q0) 
     q1 = bool_prompt(Q1) 
     q2 = bool_prompt(Q2) 
@@ -91,6 +106,10 @@ def redirect_print():
 
 def ui_method(): 
     intro_message()
+    print(Q_NEG)     
+    stat0 = prompt_loadORsave_std_Python_random_state(True) 
+    if not stat0: prompt_loadORsave_std_Python_random_state(False)
+    
     irc = prompt_vec_filepath()
     bi = prompt_BackgroundInfo(irc)
     bfe = prompt_Cracker_energy(bi,irc) 

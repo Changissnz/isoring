@@ -69,3 +69,28 @@ def instantiate_simulation_BruteForceEnv(bi,irc,cracker_energy:float):
     crck = Cracker(bi,DEFAULT_MAX_NUM_VECTORS,cracker_energy,True)  
     bfe = BruteForceEnv(crck,irc,prng,True) 
     return bfe 
+
+#-----------------------------------------------------------------------------------------------------------
+
+def save_std_Python_random_state(fp): 
+    # Save the current random generator state
+    state = random.getstate()
+
+    try: 
+        # Optionally, save state to a file
+        with open(fp, "wb") as f:
+            pickle.dump(state, f)
+        return True 
+    except: 
+        print("\t[!] invalid file for storing random state.")
+        return False 
+
+def load_std_Python_random_state(fp): 
+    try: 
+        with open(fp, "rb") as f:
+            saved_state = pickle.load(f)
+            random.setstate(saved_state)
+        return True 
+    except: 
+        print("\t[!] invalid file for storing random state.")
+        return False 
