@@ -6,7 +6,9 @@ of arbitrarily-lengthed vectors (secrets).
 
 Current version on pypi.org:  
 ----------------------------  
-0.1.4
+0.1.6
+
+This project has peaked in development. 
 
 # What is a Secret? 
 
