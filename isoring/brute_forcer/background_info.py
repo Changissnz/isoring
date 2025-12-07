@@ -80,7 +80,7 @@ class BackgroundInfo:
     @staticmethod
     def extract_from_IsoRingedChain(irc,prng,actual_sec_vec_ratio_range,dim_covered_ratio_range,\
         valid_bounds_ratio_range,prioritize_actual_Sec_ratio,shuffle_OOC_ratio,\
-        suspected_isoring_to_sec_idn_error_ratio,valid_one_shot_kill_ratio_range=[0.,0.]):
+        suspected_isoring_to_sec_idn_error_ratio,valid_one_shot_kill_ratio_range=[0.,0.],hop_size_range=DEFAULT_HOP_SIZE_RANGE):
         assert type(irc) == IsoRingedChain 
         assert 0. <= actual_sec_vec_ratio_range[0] <= actual_sec_vec_ratio_range[1] <= 1.
         assert 0. <= dim_covered_ratio_range[0] <= dim_covered_ratio_range[1] <= 1.
@@ -119,7 +119,8 @@ class BackgroundInfo:
             prioritize_actual_Sec = prng_dec() <= prioritize_actual_Sec_ratio
 
             hdict = HypStruct.extract_from_IsoRing_into_HypStruct_dict(ir,prng,actual_sec_vec_ratio,\
-                ratio_of_dim_covered,valid_bounds_ratio,prioritize_actual_Sec,valid_one_shot_kill_ratio)
+                ratio_of_dim_covered,valid_bounds_ratio,prioritize_actual_Sec,valid_one_shot_kill_ratio,\
+                hop_size_range)
             info[idn_tag] = hdict 
 
         # get the IsoRing identifiers for the IsoRing to Sec index error 

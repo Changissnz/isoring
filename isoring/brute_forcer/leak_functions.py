@@ -93,7 +93,7 @@ return:
 """
 # NOTE: `is_actual_sec_vec` may clash with `optima_point_index`.
 def prng_leak_Secret(sec,prng=None,is_actual_sec_vec:bool=True,is_valid_bounds:bool=True,optima_point_index:int=None,\
-    valid_one_shot_kill:bool=False):
+    valid_one_shot_kill:bool=False,hop_size_range=DEFAULT_HOP_SIZE_RANGE):
     assert type(sec) == Sec 
     assert type(is_actual_sec_vec) == bool 
     assert type(is_valid_bounds) == bool 
@@ -124,7 +124,7 @@ def prng_leak_Secret(sec,prng=None,is_actual_sec_vec:bool=True,is_valid_bounds:b
 
     # mask the optima point with a bound 
     if is_valid_bounds:
-        hop_size = modulo_in_range(int(prng()),DEFAULT_HOP_SIZE_RANGE) 
+        hop_size = modulo_in_range(int(prng()),hop_size_range) 
         bound_length = modulo_in_range(int(prng()),DEFAULT_BOUND_LENGTH_RANGE)
         if not valid_one_shot_kill: 
             bounds = prng__search_space_bounds_for_vector(seq,hop_size,bound_length,prng)
@@ -141,7 +141,7 @@ return:
 - dict, sec index -> (optima point index,bounds,hop_size,pr_value)
 """
 def prng_leak_IsoRing_into_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,ratio_of_dim_covered=1.0,valid_bounds_ratio=1.0,\
-    prioritize_actual_Sec:bool=True,valid_one_shot_kill_ratio=0.0): 
+    prioritize_actual_Sec:bool=True,valid_one_shot_kill_ratio=0.0,hop_size_range=DEFAULT_HOP_SIZE_RANGE): 
 
     def prg_(): return int(prng()) 
 
@@ -206,7 +206,7 @@ def prng_leak_IsoRing_into_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,ratio_o
 
         bounds,hop_size,pr_value = prng_leak_Secret(s,prng=prng,is_actual_sec_vec=is_actual_sec_vec,\
             is_valid_bounds=is_valid_bounds,optima_point_index=optima_point_index,\
-            valid_one_shot_kill=valid_one_shot_kill) 
+            valid_one_shot_kill=valid_one_shot_kill,hop_size_range=hop_size_range) 
 
         D[i] = (optima_point_index,bounds,hop_size,pr_value) 
     return D 

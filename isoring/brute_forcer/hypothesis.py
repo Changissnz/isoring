@@ -32,9 +32,9 @@ class HypStruct:
     @staticmethod 
     def extract_from_IsoRing_into_HypStruct_dict(ir:IsoRing,prng,actual_sec_vec_ratio=1.0,\
         ratio_of_dim_covered=1.0,valid_bounds_ratio=1.0,prioritize_actual_Sec:bool=True,\
-        valid_one_shot_kill_ratio=0.0): 
+        valid_one_shot_kill_ratio=0.0,hop_size_range=DEFAULT_HOP_SIZE_RANGE): 
         D = prng_leak_IsoRing_into_dict(ir,prng,actual_sec_vec_ratio,ratio_of_dim_covered,\
-            valid_bounds_ratio,prioritize_actual_Sec,valid_one_shot_kill_ratio)  
+            valid_bounds_ratio,prioritize_actual_Sec,valid_one_shot_kill_ratio,hop_size_range=hop_size_range)  
         D2 = {} 
 
         for k,v in D.items(): 

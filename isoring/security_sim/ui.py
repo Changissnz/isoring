@@ -22,6 +22,8 @@ Q2 = "[?] allow wrong order of cracking: "
 Q3 = "[?] allow one shot kill: " 
 Q4 = "[?] load Python standard random state: " 
 Q5 = "[?] save Python standard random state: " 
+Q6 = "[?] enter in a positive number (leave blank for infinity):  "
+Q7 = "[?] enter in range for hop size (leave blank for default [2,9], min is 3,max is 9):  " 
 
 
 def intro_message(): 
@@ -59,19 +61,32 @@ def prompt_vec_filepath():
         print("\t[!] invalid filepath OR erroneous file. try again.")
         return prompt_vec_filepath()
 
+def prompt_hop_size(): 
+    H = input(Q7)
+
+    if H.strip() == "": return 9 
+
+    try: 
+        i = int(H) 
+        assert 2 < i <= 9 
+        return i 
+    except: 
+        print("invalid hop size. try again.")
+        return prompt_hop_size()
+
 def prompt_BackgroundInfo(irc): 
     print(Q_NEG)    
     q0 = bool_prompt(Q0) 
     q1 = bool_prompt(Q1) 
     q2 = bool_prompt(Q2) 
     q3 = bool_prompt(Q3) 
-
+    q4 = prompt_hop_size() 
     prng = default_std_Python_prng() 
     return simulation_default_BackgroundInfo_for_IsoRingedChain(\
-        irc,prng,q0,q1,q2,q3)  
+        irc,prng,q0,q1,q2,q3,q4)   
 
 def prompt_float(): 
-    T = input("enter in a positive number (leave blank for infinity):  ")
+    T = input(Q6)
     if T.strip() == "": return float('inf')
 
     try: 

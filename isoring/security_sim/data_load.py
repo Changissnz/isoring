@@ -30,7 +30,9 @@ def load_vector_file_into_IsoRingedChain(fp,prng=default_std_Python_prng()):
         ratio_of_feedback_functions_type_1=1.0,codep_ratio=codep_ratio,shuffle_isorepr=True)
 
 def simulation_default_BackgroundInfo_for_IsoRingedChain(irc,prng,allow_inaccuracies:bool,\
-    allow_incomplete_info:bool,allow_wrong_OOC:bool,allow_one_shot_kill:bool):
+    allow_incomplete_info:bool,allow_wrong_OOC:bool,allow_one_shot_kill:bool,max_hop_size=9): 
+
+    assert type(max_hop_size) in {int,np.int32,np.int64} and 2 <= max_hop_size <=9
 
     prg_ = prng_to_decimal_output(prng) 
 
@@ -61,7 +63,7 @@ def simulation_default_BackgroundInfo_for_IsoRingedChain(irc,prng,allow_inaccura
 
     bi = BackgroundInfo.extract_from_IsoRingedChain(irc,prng,actual_sec_vec_ratio_range,\
         dim_covered_ratio_range,valid_bounds_ratio_range,prioritize_actual_Sec_ratio,\
-        shuffle_OOC_ratio,suspected_isoring_to_sec_idn_error_ratio,valid_one_shot_kill_ratio_range)
+        shuffle_OOC_ratio,suspected_isoring_to_sec_idn_error_ratio,valid_one_shot_kill_ratio_range,[2,max_hop_size])
     return bi 
 
 def instantiate_simulation_BruteForceEnv(bi,irc,cracker_energy:float): 
