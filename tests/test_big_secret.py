@@ -32,7 +32,7 @@ def IsoRingedChain_Accessories_sample_R():
 
 ### lone file test 
 """
-python3 -m tests.test_big_secret  
+py -m tests.test_big_secret  
 """
 ###
 class IsoRingedChainClass(unittest.TestCase):
@@ -54,7 +54,8 @@ class IsoRingedChainClass(unittest.TestCase):
         assert s == ceil(0.5 * (len(X) - 1)), "got {} wanted {}".format(s,ceil(0.5 * (len(X) - 1)))
         return 
 
-
+    ## NOTE: method relocated to project<morebs2> @ file<dep_ord>. 
+    """
     def test__IsoRingedChain__calculate_OOC_for_IsoRing_list__case1(self): 
 
         ir_list = IsoRing_list_sample_Q()
@@ -63,7 +64,10 @@ class IsoRingedChainClass(unittest.TestCase):
 
         sol = [{0, 12}, {4}, {5}, {6}, {8, 3, 11, 7}, {13}, {1}, {2}, {9, 14}, {10}]
         assert ooc == sol 
-
+    """ 
+    
+    ## NOTE: method relocated to project<morebs2> @ file<dep_ord>. 
+    """
     def test__IsoRingedChain__calculate_OOC_for_IsoRing_list__case2(self): 
 
         ir_list = IsoRing_list_sample_Q()
@@ -109,6 +113,7 @@ class IsoRingedChainClass(unittest.TestCase):
         ooc,stat = IsoRingedChain.calculate_OOC_for_IsoRing_list(irings)
         assert not stat 
         return 
+    """
 
     def test__IsoRingedChain__list_of_vectors_to_IsoRingedChain__case1(self): 
         
@@ -143,6 +148,7 @@ class IsoRingedChainClass(unittest.TestCase):
         L = set([len(o) for o in irc.ooc])
         assert L == {2,13} 
 
+    ## WRONG 
     def test__IsoRingedChain__list_of_vectors_to_IsoRingedChain__case3(self):
         prng = prg__LCG(-66,3,7,-3212) 
         prng2 = prg__LCG(16.36,13.23,74.1434,37177.05) 
@@ -160,6 +166,6 @@ class IsoRingedChainClass(unittest.TestCase):
                 shuffle_isorepr=True) 
         except: 
             assert False 
-
+    
 if __name__ == '__main__':
     unittest.main()

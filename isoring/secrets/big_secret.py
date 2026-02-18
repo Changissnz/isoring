@@ -1,5 +1,6 @@
 from .iring import * 
 from morebs2.numerical_generator import prg_choose_n
+from morebs2.dep_ord import * 
 from copy import deepcopy 
 
 def index_in_OOC(ooc,element): 
@@ -13,8 +14,12 @@ class IsoRingedChain:
     def __init__(self,ir_list,prng=None): 
         for ir in ir_list: assert type(ir) == IsoRing
         
+        d = dict() 
+        for q_ in ir_list: 
+            d[q_.idn_tag()] = (q_.dc_set(True),q_.dc_set(False)) 
+
         # check for valid order of cracking 
-        ooc,stat =IsoRingedChain.calculate_OOC_for_IsoRing_list(ir_list)
+        ooc,stat = calculate_dependency_order(d)
         assert stat 
 
         self.ir_dict = {ir.idn_tag(): ir for ir in ir_list}
