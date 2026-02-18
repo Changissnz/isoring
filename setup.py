@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setup(
     name='isoring',
-    version='0.1.7',
+    version='0.1.8',
     description='A data security structure, IsoRing, and a brute-force environment.',
     long_description=readme,
     author='Richard Pham',
