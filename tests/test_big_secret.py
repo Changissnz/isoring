@@ -54,66 +54,6 @@ class IsoRingedChainClass(unittest.TestCase):
         assert s == ceil(0.5 * (len(X) - 1)), "got {} wanted {}".format(s,ceil(0.5 * (len(X) - 1)))
         return 
 
-    ## NOTE: method relocated to project<morebs2> @ file<dep_ord>. 
-    """
-    def test__IsoRingedChain__calculate_OOC_for_IsoRing_list__case1(self): 
-
-        ir_list = IsoRing_list_sample_Q()
-        ooc,stat = IsoRingedChain.calculate_OOC_for_IsoRing_list(ir_list)
-        assert stat
-
-        sol = [{0, 12}, {4}, {5}, {6}, {8, 3, 11, 7}, {13}, {1}, {2}, {9, 14}, {10}]
-        assert ooc == sol 
-    """ 
-    
-    ## NOTE: method relocated to project<morebs2> @ file<dep_ord>. 
-    """
-    def test__IsoRingedChain__calculate_OOC_for_IsoRing_list__case2(self): 
-
-        ir_list = IsoRing_list_sample_Q()
-
-
-        ## case 1 
-        irings = ir_list[:6] 
-
-        for ir in irings: 
-            ir.clear_depANDcodep_sets() 
-
-        irings[0].assign_DC_set({1,2,3},set())
-        irings[1].assign_DC_set({0,2,3},set())
-        irings[2].assign_DC_set({3},set())
-
-
-        ooc,stat = IsoRingedChain.calculate_OOC_for_IsoRing_list(irings)
-        assert not stat 
-
-        ## case 2 
-        for ir in irings: 
-            ir.clear_depANDcodep_sets() 
-
-        irings[0].assign_DC_set(set(),{1,2})
-        irings[1].assign_DC_set(set(),{1,2})
-        irings[2].assign_DC_set(set(),{1,2}) 
-        irings[3].assign_DC_set({1,2},{0}) 
-
-        ooc,stat = IsoRingedChain.calculate_OOC_for_IsoRing_list(irings)
-        assert not stat 
-
-        ## case 3 
-        for ir in irings: 
-            ir.clear_depANDcodep_sets()
-
-        irings[0].assign_DC_set({1},set())
-        irings[1].assign_DC_set({2},set())
-        irings[2].assign_DC_set({3},set())
-        irings[3].assign_DC_set(set(),set())
-        irings[4].assign_DC_set({1,2,5},set())
-        irings[5].assign_DC_set({0},set())
-
-        ooc,stat = IsoRingedChain.calculate_OOC_for_IsoRing_list(irings)
-        assert not stat 
-        return 
-    """
 
     def test__IsoRingedChain__list_of_vectors_to_IsoRingedChain__case1(self): 
         
