@@ -6,7 +6,7 @@ of arbitrarily-lengthed vectors (secrets).
 
 Current version on pypi.org:  
 ----------------------------  
-0.1.6
+0.1.8
 
 This project has peaked in development. 
 
@@ -32,8 +32,9 @@ representation (iso-repr).
 
 In order for a third-party to interact with an `IsoRing` for information, third-party will have to interact with 
 feedback function of `IsoRing`. For an `IsoRing` in iso-repr vector dimension `q`, feedback function provides a 
-`q`-vector of distance scores. Distance scores are conventionally euclidean point distances. However, there are 
-alternative feedback functions that provide distorted distance scores via pseudo-random number generator. 
+`k_q`-vector of distance scores, `k_q` the number of local optima to vector dimension `q`. Distance scores are 
+conventionally euclidean point distances. However, there are alternative feedback functions that provide distorted 
+distance scores via pseudo-random number generator. 
 
 NOTE:  
 In this open implementation of cracking simulations involving `IsoRing`, the `Cracker` does not consider the 
